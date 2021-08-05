@@ -3,6 +3,7 @@ import './Registration.scss';
 import { Button, Form } from 'react-bootstrap';
 import axios from "axios";
 import alertify from 'alertifyjs';
+import { USER_SIGNUP } from "../../utils/constants"
 const Registration = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -11,9 +12,9 @@ const Registration = () => {
         event.preventDefault();
         const data = { name, email, password };
         axios
-            .post("https://social-nodejs-be.herokuapp.com/api/user/signup", data)
+            .post(`${process.env.REACT_APP_BASE_URL}${USER_SIGNUP}`, data)
             .then(res => {
-                alertify.success(res.data.message); 
+                alertify.success(res.data.message);
                 setName("");
                 setEmail("");
                 setPassword("");
