@@ -10,7 +10,6 @@ const App = () =>{
   return (
     <>
       <BrowserRouter>
-        {/* <Route path="/" exact component={} /> */}
         <Route path="/socialnetwork/login" exact component={SignUp} />
       </BrowserRouter>
     </>
