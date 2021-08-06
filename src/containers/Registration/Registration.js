@@ -3,7 +3,8 @@ import './Registration.scss';
 import { Button, Form } from 'react-bootstrap';
 import axios from "axios";
 import alertify from 'alertifyjs';
-import { USER_SIGNUP } from "../../utils/constants"
+import { USER_SIGNUP, ENTER_NAME, ENTER_EMAIL, ENTER_PASSWORD, NOT_SHARING,AGREEMENT} from "../../utils/constants";
+import { SIGN_UP } from '../../labels/button';
 const Registration = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -33,7 +34,7 @@ const Registration = () => {
                         <Form.Group className="mb-3" controlId="formBasicName">
                             <Form.Control
                                 type="text"
-                                placeholder="Enter Full Name"
+                                placeholder={ENTER_NAME}
                                 value={name}
                                 onChange={event => {
                                     setName(event.target.value);
@@ -43,20 +44,20 @@ const Registration = () => {
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Control
                                 type="email"
-                                placeholder="Enter email"
+                                placeholder={ENTER_EMAIL}
                                 value={email}
                                 onChange={event => {
                                     setEmail(event.target.value);
                                 }}
                                 required />
                             <Form.Text className="text-muted">
-                                We'll never share your email with anyone else.
+                                {NOT_SHARING}
                             </Form.Text>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicPassword">
                             <Form.Control
                                 type="password"
-                                placeholder="Password"
+                                placeholder={ENTER_PASSWORD}
                                 value={password}
                                 onChange={event => {
                                     setPassword(event.target.value);
@@ -64,11 +65,11 @@ const Registration = () => {
                                 required
                             />
                             <Form.Text className="text-muted">
-                                By clicking Sign Up, you agree to our Terms, Data Policy and Cookie Policy.
+                                {AGREEMENT}
                             </Form.Text>
                         </Form.Group>
                         <Button variant="primary" type="submit" className="btn-success">
-                            Sign Up
+                            {SIGN_UP}
                         </Button>
                     </Form>
                 </div>
