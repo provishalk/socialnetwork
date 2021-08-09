@@ -1,16 +1,18 @@
 import React from 'react'
 import "./AuthWrapper.scss"
-import ParticlesBg from 'particles-bg'
+import ParticlesBg from 'particles-bg';
+import MyNavBar from '../../components/NavBar/MyNavBar';
 const AuthWrapper = (props) => {
-    return (<>
-
-        <div className="d-flex align-items-center justify-content-center authwrapper_container">
-            <div className="col-md-4 border p-4 authwrapper_container__content">
-                {props.children}
+    return (
+        <>
+            <MyNavBar />
+            <div className="d-flex align-items-center justify-content-center authwrapper_container">
+                <div className="col-md-4 border p-4 authwrapper_container__content">
+                    {props.children}
+                </div>
             </div>
-        </div>
-        <ParticlesBg color="#D3D3D3" type="cobweb" bg={true} />
-    </>
+            <ParticlesBg color="#D3D3D3" type="cobweb" bg={true} />
+        </>
     )
 }
 

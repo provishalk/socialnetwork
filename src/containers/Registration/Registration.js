@@ -26,7 +26,7 @@ const Registration = ({ history }) => {
     }
     return (
         <AuthWrapper>
-            <h1 className="text-center mb-4">SIGN UP</h1>
+            <h1 className="text-center mb-4">Create Account</h1>
             <Form onSubmit={onFormSubmitHandler} className="mt-4">
                 <Form.Group className="mb-3" controlId="formBasicName">
                     <Form.Control
