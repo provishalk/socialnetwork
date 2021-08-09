@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import alertify from 'alertifyjs';
 import { Button, Form } from 'react-bootstrap';
-import { ENTER_EMAIL, ENTER_OTP, ACCOUNT_ACTIVATE, RESEND_OTP, SOMETHING_WRONG } from '../../utils/constants';
+import { ENTER_EMAIL, ENTER_OTP, ACCOUNT_ACTIVATE, RESEND_OTP } from '../../utils/constants';
 import { ACTIVATE, RESEND } from '../../labels/button';
 import AuthWrapper from '../../hoc/AuthWrapper/AuthWrapper';
+import "./Activate.scss"
 
 const Activate = ({ history }) => {
     const [email, setEmail] = useState("");
@@ -34,17 +35,12 @@ const Activate = ({ history }) => {
                 alertify.success(res.data.message);
             })
             .catch(err => {
-                if (!(err.response === undefined)) {
-                    alertify.warning(err.response.data.message);
-                }
-                else {
-                    alertify.error(SOMETHING_WRONG);
-                }
+                    alertify.warning(err?.response?.data?.message);
             });
     }
     return (
         <AuthWrapper>
-            <h1 className="text-center">Account Activation</h1>
+            <h1 className="text-center mb-4">Account Activation</h1>
             <Form onSubmit={onClickHandler} className="mt-4">
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Control
@@ -67,12 +63,12 @@ const Activate = ({ history }) => {
                         required
                     />
                 </Form.Group>
-                <Form.Group className="d-flex justify-content-between">
-                    <Button variant="success" type="submit">
-                        {ACTIVATE}
-                    </Button>
+                <Form.Group className="d-flex justify-content-end ">
                     <Button variant="light" type="button" onClick={onResentCode}>
                         {RESEND}
+                    </Button>
+                    <Button variant="dark" type="submit" className="activate-container_activate-btn">
+                        {ACTIVATE}
                     </Button>
                 </Form.Group>
             </Form>
