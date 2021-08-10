@@ -1,0 +1,15 @@
+.navbar{
+    &_brand-name{
+        font-size: 22px;
+        font-weight: 600;
+    }
+    &_dropdown{
+        &_link{
+            margin-left: 4px;
+            padding: 10px;
+        }
+    }
+    &_label{
+        margin-right:10px;
+    }
+}

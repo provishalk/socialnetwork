@@ -17,7 +17,7 @@ const Registration = ({ history }) => {
         axios
             .post(`${process.env.REACT_APP_BASE_URL}${USER_SIGNUP}`, data)
             .then(res => {
-                alertify.success(res.data.message);    
+                alertify.success(res.data.message);
                 history.push("/activate")
             })
             .catch(err => {
@@ -26,7 +26,7 @@ const Registration = ({ history }) => {
     }
     return (
         <AuthWrapper>
-            <h1 className="text-center">SIGN UP</h1>
+            <h1 className="text-center mb-4">Create Account</h1>
             <Form onSubmit={onFormSubmitHandler} className="mt-4">
                 <Form.Group className="mb-3" controlId="formBasicName">
                     <Form.Control
@@ -65,9 +65,11 @@ const Registration = ({ history }) => {
                         {AGREEMENT}
                     </Form.Text>
                 </Form.Group>
-                <Button variant="primary" type="submit" className="btn-success">
-                    {SIGN_UP}
-                </Button>
+                <Form.Group className="d-flex justify-content-end">
+                    <Button variant="dark" type="submit">
+                        {SIGN_UP}
+                    </Button>
+                </Form.Group>
             </Form>
         </AuthWrapper>
     )
