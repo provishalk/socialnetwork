@@ -17,7 +17,7 @@ const Activate = ({ history }) => {
             .post(`${process.env.REACT_APP_BASE_URL}${ACCOUNT_ACTIVATE}`, data)
             .then(res => {
                 alertify.success(res.data.message);
-                history.push("/login")
+                history.push("/")
             })
             .catch(err => {
                 alertify.warning(err.response.data.message);
