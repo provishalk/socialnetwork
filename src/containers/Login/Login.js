@@ -6,7 +6,7 @@ import { LOGIN } from '../../labels/button';
 import axios from 'axios';
 import alertify from 'alertifyjs';
 
-const Login = () => {
+const Login = ({history}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const onSumbitHandler = event => {
@@ -15,7 +15,9 @@ const Login = () => {
         axios
             .post(`${process.env.REACT_APP_BASE_URL}${USER_LOGIN}`, data)
             .then(res => {
+                localStorage.setItem("user",JSON.stringify(res.data.data));
                 alertify.success(SUCCESS_LOGIN);
+                history.push("/home");
             })
             .catch(err => {
                 alertify.warning(err.response.data.message);

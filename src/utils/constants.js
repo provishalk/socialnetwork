@@ -3,12 +3,16 @@ export const USER_SIGNUP = "/api/user/signup";
 export const ACCOUNT_ACTIVATE = "/api/user/activate"
 export const USER_LOGIN = "/api/user/signin";
 export const RESEND_OTP = "/api/user/resend-activate-code";
+export const HOME_PATH = "/home";
+export const LOGIN_PATH = "/";
+export const CREATE_POST = "/api/post/create-post";
 
 //Placeholders
 export const ENTER_NAME = "Enter Full Name";
 export const ENTER_EMAIL = "Enter Email";
 export const ENTER_PASSWORD = "Enter Password";
 export const ENTER_OTP = "OTP";
+export const ENTER_POST = "Let others know what you are thinking.";
 
 //Agreements
 export const NOT_SHARING = "We'll never share your email with anyone else.";
