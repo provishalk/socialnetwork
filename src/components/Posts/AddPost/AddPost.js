@@ -19,12 +19,11 @@ const AddPost = () => {
             bodyParameters,
             config
         )
-            .then(res => {
-                alertify.success(res.data.message);
+            .then(() => {
                 setText("");
             })
             .catch(err => {
-                alertify.warning(err.response.data.message);
+                alertify.warning(err?.response?.data?.message);
             });
     }
     useEffect(() => {
@@ -35,7 +34,7 @@ const AddPost = () => {
             <div className="addpost-container">
                 <div className="row">
                     <div className="col-1">
-                        <img src="https://i.pravatar.cc/300" alt="profile" className="addpost-container__img" />
+                        <img src={`${process.env.REACT_APP_PROFILE_PIC_URL}${user._id}`} alt="profile" className="addpost-container__img" />
                     </div>
                     <div className="col-11">
                         <textarea

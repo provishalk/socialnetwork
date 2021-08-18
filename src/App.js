@@ -1,4 +1,4 @@
-
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'alertifyjs/build/css/alertify.css';
 import alertify from 'alertifyjs';
@@ -7,10 +7,8 @@ import Activate from "./containers/Activate/Activate";
 import SignUp from "./containers/Registration/Registration";
 import Login from "./containers/Login/Login";
 import Home from "./containers/Home/Home"
-
 alertify.set('notifier', 'position', 'top-right');
 const App = () => {
-  
   return (
     <>
       <BrowserRouter>

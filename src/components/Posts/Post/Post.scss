@@ -1,0 +1,39 @@
+.post {
+    &__user-name {
+        font-weight: 600;
+        margin: 0;
+        font-size: 17px;
+    }
+
+    &__user {
+        margin: 0;
+        font-size: 17px;
+        display: flex;
+    }
+
+    &__post-time {
+        margin: 0;
+        font-size: 17px;
+        color: gray;
+    }
+
+    &__content {
+        font-size: 14px;
+    }
+    &__like{
+        height: 18.75px;
+        width: 18.75px;
+        border: none;
+        padding: 0;
+        background-color: rgba(255, 255, 255, 0);
+        img{
+            width: 100%;
+        }
+        &__like-count{
+            margin-left: 5px;
+            font-size: 13px;
+            line-height: 26px;
+            color: gray ;
+        }
+    }
+}
