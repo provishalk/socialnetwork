@@ -28,6 +28,26 @@ const Home = () => {
         })
     }
 
+    const onAddNewComment = (newComment) => {
+        setPosts(oldPosts => {
+            let clonePosts = _.cloneDeep(oldPosts);
+            _.forEach(clonePosts, post => {
+                if (post._id === newComment._id) {
+                    post.comments = newComment.comments
+                }
+            })
+            return clonePosts
+        })
+    }
+
+    const onDeletePost = (deletedPost) => {
+        setPosts(oldPosts => {
+            let clonePosts = _.cloneDeep(oldPosts);
+            _.remove(clonePosts, { _id: deletedPost._id });
+            return clonePosts
+        })
+    }
+
     useEffect(() => {
         const socket = io.connect(`${process.env.REACT_APP_BASE_URL}`)
         const config = {
@@ -44,6 +64,14 @@ const Home = () => {
 
         socket.on("new-post", (e) => {
             onAddNewPost(e);
+        })
+
+        socket.on("new-comment", (e) => {
+            onAddNewComment(e);
+        })
+
+        socket.on("delete-post", (e) => {
+            onDeletePost(e);
         })
     }, [])
 
@@ -65,8 +93,9 @@ const Home = () => {
                                 text={post.text}
                                 createdAt={post.createdAt}
                                 likes={post?.likes}
-                                _id={post?._id}
+                                postId={post?._id}
                                 postedBy={post?.user}
+                                comments={post.comments}
                             />
                         </div>
                     })}

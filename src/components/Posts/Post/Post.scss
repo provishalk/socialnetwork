@@ -1,39 +1,62 @@
+@mixin post-font {
+    margin: 0;
+    font-size: 17px;
+
+}
+
 .post {
     &__user-name {
+        @include post-font;
         font-weight: 600;
-        margin: 0;
-        font-size: 17px;
     }
 
     &__user {
-        margin: 0;
-        font-size: 17px;
+        @include post-font;
         display: flex;
     }
 
     &__post-time {
-        margin: 0;
-        font-size: 17px;
+        @include post-font;
         color: gray;
     }
 
     &__content {
         font-size: 14px;
     }
-    &__like{
+
+    &__dropdown {
+        margin-left: auto;
+        background-color: white;
+        color: rgba(0, 0, 0, 0.63);
+        border-style: none;
+    }
+
+
+
+    &__buttons {
         height: 18.75px;
         width: 18.75px;
         border: none;
         padding: 0;
         background-color: rgba(255, 255, 255, 0);
-        img{
+
+        img {
             width: 100%;
         }
-        &__like-count{
-            margin-left: 5px;
+
+        &__like-count {
+            margin: 0 5px 0 5px;
             font-size: 13px;
             line-height: 26px;
-            color: gray ;
+            color: gray;
+        }
+
+        &__comment {
+            margin-left: 20px;
+
+            &__user-comments {
+                padding: 5px;
+            }
         }
     }
 }
