@@ -6,6 +6,9 @@ export const RESEND_OTP = "/api/user/resend-activate-code";
 export const HOME_PATH = "/home";
 export const LOGIN_PATH = "/";
 export const CREATE_POST = "/api/post/create-post";
+export const LIKE_POST = "/api/post/like/";
+export const DISLIKE_POST = "/api/post/dislike/"
+export const GET_POSTS = "/api/post/get-posts"
 
 //Placeholders
 export const ENTER_NAME = "Enter Full Name";
