@@ -77,7 +77,6 @@ const Home = () => {
 
     return (
         <>
-            <MyNavBar />
             <div className="container">
                 <div className="row">
                     <div className="col-md-8 m-auto  p-2 font-weight-bold home__cards">

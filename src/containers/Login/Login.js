@@ -5,8 +5,13 @@ import { NOT_SHARING, ENTER_EMAIL, ENTER_PASSWORD, USER_LOGIN, SUCCESS_LOGIN } f
 import { LOGIN } from '../../labels/button';
 import axios from 'axios';
 import alertify from 'alertifyjs';
-
-const Login = ({history}) => {
+import { Link } from 'react-router-dom';
+import "./Login.scss"
+const Login = ({ history }) => {
+    const isLoggedIn = localStorage.getItem("user");
+    if (isLoggedIn) {
+        history.push("/home");
+    }
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const onSumbitHandler = event => {
@@ -15,7 +20,7 @@ const Login = ({history}) => {
         axios
             .post(`${process.env.REACT_APP_BASE_URL}${USER_LOGIN}`, data)
             .then(res => {
-                localStorage.setItem("user",JSON.stringify(res.data.data));
+                localStorage.setItem("user", JSON.stringify(res.data.data));
                 alertify.success(SUCCESS_LOGIN);
                 history.push("/home");
             })
@@ -56,6 +61,11 @@ const Login = ({history}) => {
                     <Button variant="dark" type="submit">
                         {LOGIN}
                     </Button>
+                </Form.Group>
+                <Form.Group className="text-center">
+                    <Form.Text>
+                        Forgot password? · <Link to="/signup" className="login__link">Sign up</Link>
+                    </Form.Text>
                 </Form.Group>
             </Form>
         </AuthWrapper>

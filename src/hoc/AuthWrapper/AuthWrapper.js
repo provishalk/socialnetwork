@@ -5,7 +5,6 @@ import MyNavBar from '../../components/NavBar/MyNavBar';
 const AuthWrapper = (props) => {
     return (
         <>
-            <MyNavBar />
             <div className="d-flex align-items-center justify-content-center authwrapper_container">
                 <div className="col-md-4 border p-4 authwrapper_container__content bg-white">
                     {props.children}

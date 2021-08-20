@@ -6,7 +6,7 @@ import alertify from 'alertifyjs';
 import { USER_SIGNUP, ENTER_NAME, ENTER_EMAIL, ENTER_PASSWORD, NOT_SHARING, AGREEMENT } from "../../utils/constants";
 import { SIGN_UP } from '../../labels/button';
 import AuthWrapper from '../../hoc/AuthWrapper/AuthWrapper';
-
+import { Link } from 'react-router-dom';
 const Registration = ({ history }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -69,6 +69,11 @@ const Registration = ({ history }) => {
                     <Button variant="dark" type="submit">
                         {SIGN_UP}
                     </Button>
+                </Form.Group>
+                <Form.Group className="text-center">
+                    <Form.Text>
+                        Already have account? · <Link to="/" className="login__link">Login</Link>
+                    </Form.Text>
                 </Form.Group>
             </Form>
         </AuthWrapper>
