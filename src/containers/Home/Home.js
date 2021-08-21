@@ -1,79 +1,111 @@
-import React, { useState, useEffect } from 'react'
-import MyNavBar from "../../components/NavBar/MyNavBar"
-import AddPost from '../../components/Posts/AddPost/AddPost'
-import Post from '../../components/Posts/Post/Post'
-import "./Home.scss"
-import axios from 'axios'
-import { GET_POSTS } from '../../utils/constants'
+import React, { useState, useEffect } from "react";
+import AddPost from "../../components/Posts/AddPost/AddPost";
+import Post from "../../components/Posts/Post/Post";
+import "./Home.scss";
+import axios from "axios";
+import { GET_POSTS } from "../../utils/constants";
 import io from "socket.io-client";
-import _ from "lodash"
+import _ from "lodash";
 const Home = () => {
-    const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const onAddNewPost = (newPost) => {
+    setPosts((oldPosts) => [newPost, ...oldPosts]);
+  };
+
+  const onLikeHandler = (like) => {
+    setPosts((oldPosts) => {
+      let clonePosts = _.cloneDeep(oldPosts);
+      _.forEach(clonePosts, (post) => {
+        if (post._id === like._id) {
+          post.likes = like.likes;
+        }
+      });
+      return clonePosts;
+    });
+  };
+
+  const onAddNewComment = (newComment) => {
+    setPosts((oldPosts) => {
+      let clonePosts = _.cloneDeep(oldPosts);
+      _.forEach(clonePosts, (post) => {
+        if (post._id === newComment._id) {
+          post.comments = newComment.comments;
+        }
+      });
+      return clonePosts;
+    });
+  };
+  const onDeletePost = (deletedPost) => {
+    setPosts((oldPosts) => {
+      let clonePosts = _.cloneDeep(oldPosts);
+      _.remove(clonePosts, { _id: deletedPost._id });
+      return clonePosts;
+    });
+  };
+  useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
+    const socket = io.connect(`${process.env.REACT_APP_BASE_URL}`);
+    const config = {
+      headers: { Authorization: `Bearer ${user.token}` },
+    };
+    axios
+      .get(`${process.env.REACT_APP_BASE_URL}${GET_POSTS}`, config)
+      .then((res) => setPosts(res.data.data))
+      .catch((err) => console.error(err));
 
-    const onAddNewPost = (newPost) => {
-        setPosts(oldPosts => [newPost, ...oldPosts])
-    }
+    socket.on("new-like", (event) => {
+      onLikeHandler(event);
+    });
 
+    socket.on("new-post", (e) => {
+      onAddNewPost(e);
+    });
 
-    const onLikeHandler = (like) => {
-        setPosts(oldPosts => {
-            let clonePosts = _.cloneDeep(oldPosts);
-            _.forEach(clonePosts, post => {
-                if (post._id === like._id) {
-                    post.likes = like.likes
-                }
-            })
-            return clonePosts
-        })
-    }
+    socket.on("new-comment", (e) => {
+      onAddNewComment(e);
+    });
 
-    useEffect(() => {
-        const socket = io.connect(`${process.env.REACT_APP_BASE_URL}`)
-        const config = {
-            headers: { Authorization: `Bearer ${user.token}` }
-        };
-        axios
-            .get(`${process.env.REACT_APP_BASE_URL}${GET_POSTS}`, config)
-            .then(res => setPosts(res.data.data))
-            .catch(err => console.error(err));
+    socket.on("delete-post", (e) => {
+      onDeletePost(e);
+    });
+  }, []);
 
-        socket.on("new-like", (event) => {
-            onLikeHandler(event)
-        })
-
-        socket.on("new-post", (e) => {
-            onAddNewPost(e);
-        })
-    }, [])
-
-    return (
-        <>
-            <MyNavBar />
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-8 m-auto  p-2 font-weight-bold home__cards">
-                        <h4>Home</h4>
-                    </div>
-                    <div className="col-md-8 m-auto  p-2 font-weight-bold home__cards">
-                        <AddPost />
-                    </div>
-                    {posts.map((post) => {
-                        return <div className="col-md-8 m-auto  p-2 font-weight-bold home__cards" key={post._id}>
-                            <Post
-                                name={post?.user?.name}
-                                text={post.text}
-                                createdAt={post.createdAt}
-                                likes={post?.likes}
-                                _id={post?._id}
-                                postedBy={post?.user}
-                            />
-                        </div>
-                    })}
-                </div>
+  return (
+    <>
+      <div>
+        <div className="row">
+          <div className="col"></div>
+          <div className="col">
+            <div className="col m-auto  p-2 font-weight-bold home__cards">
+              <h4>Home</h4>
             </div>
-        </>
-    )
-}
+            <div className="col m-auto  p-2 font-weight-bold home__cards">
+              <AddPost />
+            </div>
+            {posts.map((post) => {
+              return (
+                <div
+                  className="col m-auto  p-2 font-weight-bold home__cards"
+                  key={post._id}
+                >
+                  <Post
+                    name={post?.user?.name}
+                    text={post.text}
+                    createdAt={post.createdAt}
+                    likes={post?.likes}
+                    postId={post?._id}
+                    postedBy={post?.user}
+                    comments={post.comments}
+                  />
+                </div>
+              );
+            })}
+          </div>
+          <div className="col">Hello</div>
+        </div>
+      </div>
+    </>
+  );
+};
 
-export default Home
+export default Home;
