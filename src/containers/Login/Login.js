@@ -23,6 +23,7 @@ const Login = ({ history }) => {
   const [password, setPassword] = useState("");
   const onSumbitHandler = (event) => {
     event.preventDefault();
+    event.target[2].disabled=true; 
     const data = { email, password };
     axios
       .post(`${process.env.REACT_APP_BASE_URL}${USER_LOGIN}`, data)
@@ -33,6 +34,7 @@ const Login = ({ history }) => {
       })
       .catch((err) => {
         alertify.warning(err.response.data.message);
+        event.target[2].disabled=false;
       });
   };
   return (

@@ -7,7 +7,8 @@ import { CREATE_POST } from "../../../utils/constants";
 const AddPost = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [text, setText] = useState("");
-  const onPostClickHandler = () => {
+  const onPostClickHandler = (event) => {
+    event.target.disabled = true;
     const config = {
       headers: { Authorization: `Bearer ${user.token}` },
     };
@@ -25,6 +26,7 @@ const AddPost = () => {
       })
       .catch((err) => {
         alertify.warning(err?.response?.data?.message);
+        event.target.disabled = false;
       });
   };
   useEffect(() => {
