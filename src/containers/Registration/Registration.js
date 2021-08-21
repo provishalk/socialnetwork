@@ -3,6 +3,7 @@ import "./Registration.scss";
 import { Button, Form } from "react-bootstrap";
 import axios from "axios";
 import alertify from "alertifyjs";
+
 import {
   USER_SIGNUP,
   ENTER_NAME,
