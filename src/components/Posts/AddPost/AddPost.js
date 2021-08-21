@@ -42,7 +42,7 @@ const AddPost = () => {
               className="addpost-container__img"
             />
           </div>
-          <div className="col-11">
+          <div className="col-10 col-sm-10 col-lg-11 addpost-container__col-adjustment">
             <textarea
               id="post"
               className="addpost-container__textarea"

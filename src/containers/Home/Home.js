@@ -7,6 +7,8 @@ import { GET_POSTS } from "../../utils/constants";
 import io from "socket.io-client";
 import _ from "lodash";
 import alertify from "alertifyjs";
+import { OverlayTrigger, Button, Tooltip } from 'react-bootstrap';
+
 const Home = ({ history }) => {
   const [posts, setPosts] = useState([]);
   const onAddNewPost = (newPost) => {
@@ -43,6 +45,10 @@ const Home = ({ history }) => {
       return clonePosts;
     });
   };
+  const onLogoutHandler = () =>{
+    localStorage.clear();
+    history.push("/");
+  }
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     const socket = io.connect(`${process.env.REACT_APP_BASE_URL}`);
@@ -81,7 +87,7 @@ const Home = ({ history }) => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-0 col-xl-4"></div>
-          <div className="col col-xl-4 p-0">
+          <div className="col col-md-6 col-xl-4 home__posts-container p-0">
             <div className="col m-auto  p-2 font-weight-bold home__cards">
               <h4>Home</h4>
             </div>
@@ -107,9 +113,18 @@ const Home = ({ history }) => {
               );
             })}
           </div>
-          <div className="col-0 col-xl-4 d-flex">
+          <div className="col-0 col-md-3 col-xl-4 d-flex home__logout">
             <div className="ml-auto">
-              <button className="btn btn-light">logout</button>
+              <OverlayTrigger
+                placement='bottom'
+                overlay={
+                  <Tooltip>
+                    Click me logout and redirect to login.
+                  </Tooltip>
+                }
+              >
+                <Button variant="light" onClick={onLogoutHandler}>Logout</Button>
+              </OverlayTrigger>
             </div>
           </div>
         </div>

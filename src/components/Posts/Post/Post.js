@@ -1,32 +1,31 @@
 import React, { useState } from "react";
 import "./Post.scss";
-import { LIKED, NOT_LIKED, COMMENT } from "../../../labels/button";
 import { LIKE_POST, DISLIKE_POST, DELETE_POST } from "../../../utils/constants";
 import moment from "moment";
 import axios from "axios";
 import { Collapse, Dropdown } from "react-bootstrap";
 import Comments from "./Comments/Comments";
+import { BsChat } from 'react-icons/bs';
+import { FcLike } from 'react-icons/fc';
+import { AiOutlineHeart } from 'react-icons/ai';
 const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
   const [open, setOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
+  const [postLikedByCurrentUser, setPostLikedByCurrentUser] = useState(likes.includes(user._id) ? <FcLike key={1} /> : <AiOutlineHeart key={2} />)
   const onHandleLike = (event) => {
-    event.target.src = event.target.src === LIKED ? NOT_LIKED : LIKED;
+    setPostLikedByCurrentUser(postLikedByCurrentUser.key === "1" ? <AiOutlineHeart key={2} /> : <FcLike key={1} />);
     const config = {
       headers: { Authorization: `Bearer ${user.token}` },
     };
     axios
       .get(
-        `${process.env.REACT_APP_BASE_URL}${
-          event.target.src === LIKED ? LIKE_POST : DISLIKE_POST
+        `${process.env.REACT_APP_BASE_URL}${postLikedByCurrentUser.key === "1" ? DISLIKE_POST : LIKE_POST
         }${postId}`,
         config
       )
       .then()
       .catch((err) => console.error(err));
   };
-
-  const postLikedByCurrentUser = likes.includes(user._id) ? LIKED : NOT_LIKED;
-
   const onDeletePostHandler = () => {
     const config = {
       headers: { Authorization: `Bearer ${user.token}` },
@@ -49,7 +48,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
           className="addpost-container__img"
         />
       </div>
-      <div className="col-11">
+      <div className="col-10 col-sm-10 col-lg-11 addpost-container__col-adjustment">
         <div className="post__user">
           <p className="post__user-name">{name}</p>
           <span>·</span>
@@ -78,7 +77,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
         <div className="d-flex">
           <div>
             <button className="post__buttons" onClick={onHandleLike}>
-              <img src={postLikedByCurrentUser} alt="Like" />
+              {postLikedByCurrentUser}
             </button>
             <span className="post__buttons__like-count">{likes.length}</span>
           </div>
@@ -90,7 +89,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
               aria-expanded={open}
               className="post__buttons"
             >
-              <img src={COMMENT} alt="Like" />
+              <BsChat />
             </button>
             <span className="post__buttons__like-count">{comments.length}</span>
           </div>
