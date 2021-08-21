@@ -3,8 +3,5 @@
        "javascript": "javascriptreact",
     },
     "beautify.config": "",
-      "eslint.workingDirectories": [
-        "./client" 
-      ]
     
  }
