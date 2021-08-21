@@ -6,7 +6,8 @@ import axios from "axios";
 import { GET_POSTS } from "../../utils/constants";
 import io from "socket.io-client";
 import _ from "lodash";
-const Home = () => {
+import alertify from "alertifyjs";
+const Home = ({ history }) => {
   const [posts, setPosts] = useState([]);
   const onAddNewPost = (newPost) => {
     setPosts((oldPosts) => [newPost, ...oldPosts]);
@@ -50,8 +51,13 @@ const Home = () => {
     };
     axios
       .get(`${process.env.REACT_APP_BASE_URL}${GET_POSTS}`, config)
-      .then((res) => setPosts(res.data.data))
-      .catch((err) => console.error(err));
+      .then((res) => setPosts(res?.data?.data))
+      .catch((err) => {
+        console.log(err);
+        alertify.warning(err.response.data.message);
+        history.push("/");
+        localStorage.clear();
+      });
 
     socket.on("new-like", (event) => {
       onLikeHandler(event);
@@ -72,10 +78,10 @@ const Home = () => {
 
   return (
     <>
-      <div>
+      <div className="container-fluid">
         <div className="row">
-          <div className="col"></div>
-          <div className="col">
+          <div className="col-0 col-xl-4"></div>
+          <div className="col col-xl-4 p-0">
             <div className="col m-auto  p-2 font-weight-bold home__cards">
               <h4>Home</h4>
             </div>
@@ -101,7 +107,11 @@ const Home = () => {
               );
             })}
           </div>
-          <div className="col">Hello</div>
+          <div className="col-0 col-xl-4 d-flex">
+            <div className="ml-auto">
+              <button className="btn btn-light">logout</button>
+            </div>
+          </div>
         </div>
       </div>
     </>
