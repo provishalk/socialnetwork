@@ -7,7 +7,8 @@ import { CREATE_POST } from "../../../utils/constants";
 const AddPost = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [text, setText] = useState("");
-  const onPostClickHandler = () => {
+  const onPostClickHandler = (event) => {
+    event.target.disabled = true;
     const config = {
       headers: { Authorization: `Bearer ${user.token}` },
     };
@@ -25,6 +26,7 @@ const AddPost = () => {
       })
       .catch((err) => {
         alertify.warning(err?.response?.data?.message);
+        event.target.disabled = false;
       });
   };
   useEffect(() => {
@@ -42,7 +44,7 @@ const AddPost = () => {
               className="addpost-container__img"
             />
           </div>
-          <div className="col-11">
+          <div className="col-10 col-sm-10 col-lg-11 addpost-container__col-adjustment">
             <textarea
               id="post"
               className="addpost-container__textarea"
