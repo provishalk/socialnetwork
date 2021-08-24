@@ -13,11 +13,15 @@ import {
 import { SIGN_UP } from "../../labels/button";
 import AuthWrapper from "../../hoc/AuthWrapper/AuthWrapper";
 import { Link } from "react-router-dom";
+import Spinner from 'react-bootstrap/Spinner';
 const Registration = ({ history }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
   const onFormSubmitHandler = (event) => {
+    setIsButtonClicked(true);
+    event.target[3].disabled = true;
     event.preventDefault();
     const data = { name, email, password };
     axios
@@ -28,6 +32,8 @@ const Registration = ({ history }) => {
       })
       .catch((err) => {
         alertify.warning(err.response.data.message);
+        event.target[3].disabled = false;
+        setIsButtonClicked(false);
       });
   };
   return (
@@ -68,8 +74,8 @@ const Registration = ({ history }) => {
           />
         </Form.Group>
         <Form.Group className="d-flex justify-content-end">
-          <Button variant="dark" type="submit">
-            {SIGN_UP}
+          <Button variant="dark" type="submit" className="registration_container__signupBtn">
+            {isButtonClicked ? (<Spinner animation="border" variant="light" size="sm" />) : (<>{SIGN_UP}</>)}
           </Button>
         </Form.Group>
         <Form.Group className="text-center">

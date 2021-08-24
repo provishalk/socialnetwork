@@ -6,7 +6,7 @@ import {
   ENTER_PASSWORD,
   USER_LOGIN,
 } from "../../utils/constants";
-
+import Spinner from 'react-bootstrap/Spinner';
 import { LOGIN } from "../../labels/button";
 import axios from "axios";
 import alertify from "alertifyjs";
@@ -19,9 +19,11 @@ const Login = ({ history }) => {
   }
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
   const onSumbitHandler = (event) => {
+    setIsButtonClicked(true);
     event.preventDefault();
-    event.target[2].disabled=true; 
+    event.target[2].disabled = true;
     const data = { email, password };
     axios
       .post(`${process.env.REACT_APP_BASE_URL}${USER_LOGIN}`, data)
@@ -30,8 +32,9 @@ const Login = ({ history }) => {
         history.push("/home");
       })
       .catch((err) => {
+        setIsButtonClicked(false);
         alertify.warning(err.response.data.message);
-        event.target[2].disabled=false;
+        event.target[2].disabled = false;
       });
   };
   return (
@@ -62,8 +65,8 @@ const Login = ({ history }) => {
           />
         </Form.Group>
         <Form.Group className="d-flex justify-content-end">
-          <Button variant="dark" type="submit">
-            {LOGIN}
+          <Button variant="dark" type="submit" className="login__loginButton">
+            {isButtonClicked?(<Spinner animation="border" variant="light" size="sm" />):(<>{LOGIN}</>)}
           </Button>
         </Form.Group>
         <Form.Group className="text-center">
