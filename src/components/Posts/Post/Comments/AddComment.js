@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { WRITE_COMMENT, CREATE_COMMENT } from "../../../../utils/constants";
+import { WRITE_COMMENT, CREATE_COMMENT,SESSION_EXPIRED } from "../../../../utils/constants";
 import axios from "axios";
 import alertify from "alertifyjs";
+import { useHistory } from "react-router-dom";
 const AddComment = ({ postId }) => {
+  let history = useHistory();
   const user = JSON.parse(localStorage.getItem("user"));
   const [newComment, setNewComment] = useState("");
   const onCommentSubmitHandler = (e) => {
     e.preventDefault();
     const config = {
-      headers: { Authorization: `Bearer ${user.token}` },
+      headers: { Authorization: `Bearer ${user?.token}` },
     };
 
     const bodyParameters = { text: newComment };
@@ -23,13 +25,16 @@ const AddComment = ({ postId }) => {
       })
       .catch((err) => {
         alertify.warning(err?.response?.data?.message);
+        if(err?.response?.data?.message===SESSION_EXPIRED){
+          history.push("/");
+        }
       });
   };
   return (
     <>
       <div className="col-1 comments__userprofile">
         <img
-          src={`${process.env.REACT_APP_PROFILE_PIC_URL}${user._id}`}
+          src={`${process.env.REACT_APP_PROFILE_PIC_URL}${user?._id}`}
           alt="profile"
           className="comments__profile"
         />

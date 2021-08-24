@@ -8,9 +8,14 @@ import io from "socket.io-client";
 import _ from "lodash";
 import alertify from "alertifyjs";
 import { OverlayTrigger, Button, Tooltip } from "react-bootstrap";
+import { FiLogOut } from 'react-icons/fi';
 
 const Home = ({ history }) => {
   const [posts, setPosts] = useState([]);
+  const isLoggedIn = localStorage.getItem("user");
+  if(!isLoggedIn){
+    history.push("/");
+  }
   const onAddNewPost = (newPost) => {
     setPosts((oldPosts) => [newPost, ...oldPosts]);
   };
@@ -53,7 +58,7 @@ const Home = ({ history }) => {
     const user = JSON.parse(localStorage.getItem("user"));
     const socket = io.connect(`${process.env.REACT_APP_BASE_URL}`);
     const config = {
-      headers: { Authorization: `Bearer ${user.token}` },
+      headers: { Authorization: `Bearer ${user?.token}` },
     };
     axios
       .get(`${process.env.REACT_APP_BASE_URL}${GET_POSTS}`, config)
@@ -73,21 +78,21 @@ const Home = ({ history }) => {
       onAddNewPost(e);
     });
 
-    socket.on("new-comment", (e) => {
+    socket.on("comments", (e) => {
       onAddNewComment(e);
     });
 
     socket.on("delete-post", (e) => {
       onDeletePost(e);
     });
-  }, [history]);
-
+  }, []);
+  
   return (
     <>
       <div className="container-fluid">
         <div className="row">
           <div className="col-0 col-xl-3"></div>
-          <div className="col col-md-6 col-xl-5 home__posts-container p-0">
+          <div className="col col-md-6 col-xl-6 px-4 home__posts-container p-0">
             <div className="col m-auto  p-2 font-weight-bold home__cards">
               <h4>Home</h4>
             </div>
@@ -113,7 +118,7 @@ const Home = ({ history }) => {
               );
             })}
           </div>
-          <div className="col-0 col-md-3 col-xl-4 d-flex home__logout">
+          <div className="col-0 col-md-3 col-xl-3 d-flex home__logout">
             <div className="ml-auto">
               <OverlayTrigger
                 placement="bottom"
@@ -121,8 +126,8 @@ const Home = ({ history }) => {
                   <Tooltip>Logout</Tooltip>
                 }
               >
-                <Button variant="light" onClick={onLogoutHandler}>
-                  Logout
+                <Button variant="light" onClick={onLogoutHandler} className="home__logout-btn">
+                  <FiLogOut/>
                 </Button>
               </OverlayTrigger>
             </div>

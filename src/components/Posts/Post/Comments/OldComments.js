@@ -5,7 +5,7 @@ const OldComments = ({ comment }) => {
     <>
       <div className="col-1">
         <img
-          src={`${process.env.REACT_APP_PROFILE_PIC_URL}${comment.user._id}`}
+          src={`${process.env.REACT_APP_PROFILE_PIC_URL}${comment.user?._id}`}
           alt="profile"
           className="comments__profile mt-2"
         />

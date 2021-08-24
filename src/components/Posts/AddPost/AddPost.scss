@@ -36,6 +36,8 @@
         display: flex;
         margin-left: auto;
         justify-content: center;
+        min-height: 32px;
+        align-items: center;
     }
 
     &__img {

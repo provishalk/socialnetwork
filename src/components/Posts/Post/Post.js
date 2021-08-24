@@ -11,11 +11,11 @@ import { AiOutlineHeart } from 'react-icons/ai';
 const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
   const [open, setOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
-  const [postLikedByCurrentUser, setPostLikedByCurrentUser] = useState(likes.includes(user._id) ? <FcLike key={1} /> : <AiOutlineHeart key={2} />)
+  const [postLikedByCurrentUser, setPostLikedByCurrentUser] = useState(likes.includes(user?._id) ? <FcLike key={1} /> : <AiOutlineHeart key={2} />)
   const onHandleLike = (event) => {
     setPostLikedByCurrentUser(postLikedByCurrentUser.key === "1" ? <AiOutlineHeart key={2} /> : <FcLike key={1} />);
     const config = {
-      headers: { Authorization: `Bearer ${user.token}` },
+      headers: { Authorization: `Bearer ${user?.token}` },
     };
     axios
       .get(
@@ -28,7 +28,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
   };
   const onDeletePostHandler = () => {
     const config = {
-      headers: { Authorization: `Bearer ${user.token}` },
+      headers: { Authorization: `Bearer ${user?.token}` },
     };
     axios
       .delete(
@@ -53,7 +53,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
           <p className="post__user-name">{name}</p>
           <span>·</span>
           <p className="post__post-time">{moment(createdAt).fromNow(true)}</p>
-          {postedBy._id === user._id ? (
+          {postedBy._id === user?._id ? (
             <Dropdown className="post__dropdown">
               <Dropdown.Toggle
                 className="post__dropdown post__dropdowm-btn"

@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./AddPost.scss";
-import { ENTER_POST } from "../../../utils/constants";
+import { ENTER_POST,CREATE_POST,SESSION_EXPIRED } from "../../../utils/constants";
 import axios from "axios";
 import alertify from "alertifyjs";
-import { CREATE_POST } from "../../../utils/constants";
+import { useHistory } from "react-router-dom";
+import Spinner from 'react-bootstrap/Spinner';
 const AddPost = () => {
+  let history = useHistory();
   const user = JSON.parse(localStorage.getItem("user"));
   const [text, setText] = useState("");
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
   const onPostClickHandler = (event) => {
     event.target.disabled = true;
+    setIsButtonClicked(true);
     const config = {
-      headers: { Authorization: `Bearer ${user.token}` },
+      headers: { Authorization: `Bearer ${user?.token}` },
     };
 
     const bodyParameters = { text };
@@ -23,10 +27,15 @@ const AddPost = () => {
       )
       .then(() => {
         setText("");
+        setIsButtonClicked(false);
       })
       .catch((err) => {
         alertify.warning(err?.response?.data?.message);
         event.target.disabled = false;
+        setIsButtonClicked(false);
+        if(err?.response?.data?.message===SESSION_EXPIRED){
+          history.push("/");
+        }
       });
   };
   useEffect(() => {
@@ -39,7 +48,7 @@ const AddPost = () => {
         <div className="row">
           <div className="col-1">
             <img
-              src={`${process.env.REACT_APP_PROFILE_PIC_URL}${user._id}`}
+              src={`${process.env.REACT_APP_PROFILE_PIC_URL}${user?._id}`}
               alt="profile"
               className="addpost-container__img"
             />
@@ -61,7 +70,7 @@ const AddPost = () => {
               id="post-btn"
               onClick={onPostClickHandler}
             >
-              Post
+              {isButtonClicked?(<Spinner animation="border" variant="light" size="sm" />):(<>Post</>)}
             </button>
           </div>
         </div>

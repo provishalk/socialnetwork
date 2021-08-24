@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AuthWrapper from "../../hoc/AuthWrapper/AuthWrapper";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, InputGroup } from "react-bootstrap";
 import {
   ENTER_EMAIL,
   ENTER_PASSWORD,
@@ -12,6 +12,7 @@ import axios from "axios";
 import alertify from "alertifyjs";
 import { Link } from "react-router-dom";
 import "./Login.scss";
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 const Login = ({ history }) => {
   const isLoggedIn = localStorage.getItem("user");
   if (isLoggedIn) {
@@ -20,6 +21,8 @@ const Login = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [passwordFeildType, setPasswordFeildType] = useState("password");
   const onSumbitHandler = (event) => {
     setIsButtonClicked(true);
     event.preventDefault();
@@ -37,6 +40,10 @@ const Login = ({ history }) => {
         event.target[2].disabled = false;
       });
   };
+  const onViewPassword = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+    isPasswordVisible?setPasswordFeildType("password"):setPasswordFeildType("text");
+  }
   return (
     <AuthWrapper>
       <h3 className="text-center mb-4 ">{LOGIN}</h3>
@@ -54,19 +61,25 @@ const Login = ({ history }) => {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Control
-            type="password"
-            placeholder={ENTER_PASSWORD}
-            value={password}
-            onChange={(event) => {
-              setPassword(event.target.value);
-            }}
-            required
-          />
+          <InputGroup>
+            <Form.Control
+              type={passwordFeildType}
+              className="login__password-input"
+              placeholder={ENTER_PASSWORD}
+              value={password}
+              onChange={(event) => {
+                setPassword(event.target.value);
+              }}
+              required
+            />
+            <InputGroup.Text className="login__password-eye" onClick={onViewPassword}>
+              {isPasswordVisible ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+            </InputGroup.Text>
+          </InputGroup>
         </Form.Group>
         <Form.Group className="d-flex justify-content-end">
           <Button variant="dark" type="submit" className="login__loginButton">
-            {isButtonClicked?(<Spinner animation="border" variant="light" size="sm" />):(<>{LOGIN}</>)}
+            {isButtonClicked ? (<Spinner animation="border" variant="light" size="sm" />) : (<>{LOGIN}</>)}
           </Button>
         </Form.Group>
         <Form.Group className="text-center">
