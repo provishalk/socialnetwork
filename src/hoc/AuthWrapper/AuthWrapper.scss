@@ -1,7 +1,25 @@
 .authwrapper_container {
-    height: 93vh;
-    &__content{
-        border-radius: 6px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  height: 100vh;
+  &__content {
+    border-radius: 6px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border: 1px solid #dee2e6;
+  }
+}
+.particles-bg-canvas-self {
+  background-color: whitesmoke;
+}
+
+@media only screen and (max-width: 600px) {
+  .particles-bg-canvas-self {
+    display: none;
+  }
+  .authwrapper_container {
+    &__content {
+        width: 100%;
+      border-radius: none;
+      box-shadow: none;
+      border: none;
     }
+  }
 }
