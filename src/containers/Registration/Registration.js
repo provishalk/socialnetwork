@@ -8,9 +8,7 @@ import {
   USER_SIGNUP,
   ENTER_NAME,
   ENTER_EMAIL,
-  ENTER_PASSWORD,
-  NOT_SHARING,
-  AGREEMENT,
+  ENTER_PASSWORD
 } from "../../utils/constants";
 import { SIGN_UP } from "../../labels/button";
 import AuthWrapper from "../../hoc/AuthWrapper/AuthWrapper";
@@ -34,7 +32,7 @@ const Registration = ({ history }) => {
   };
   return (
     <AuthWrapper>
-      <h1 className="text-center mb-4">Create Account</h1>
+      <h3 className="text-center mb-4">Create Account</h3>
       <Form onSubmit={onFormSubmitHandler} className="mt-4">
         <Form.Group className="mb-3" controlId="formBasicName">
           <Form.Control
@@ -57,7 +55,6 @@ const Registration = ({ history }) => {
             }}
             required
           />
-          <Form.Text className="text-muted">{NOT_SHARING}</Form.Text>
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Control
@@ -69,7 +66,6 @@ const Registration = ({ history }) => {
             }}
             required
           />
-          <Form.Text className="text-muted">{AGREEMENT}</Form.Text>
         </Form.Group>
         <Form.Group className="d-flex justify-content-end">
           <Button variant="dark" type="submit">

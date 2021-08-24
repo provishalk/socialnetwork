@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import AuthWrapper from "../../hoc/AuthWrapper/AuthWrapper";
 import { Button, Form } from "react-bootstrap";
 import {
-  NOT_SHARING,
   ENTER_EMAIL,
   ENTER_PASSWORD,
   USER_LOGIN,
-  SUCCESS_LOGIN,
 } from "../../utils/constants";
 
 import { LOGIN } from "../../labels/button";
@@ -29,7 +27,6 @@ const Login = ({ history }) => {
       .post(`${process.env.REACT_APP_BASE_URL}${USER_LOGIN}`, data)
       .then((res) => {
         localStorage.setItem("user", JSON.stringify(res.data.data));
-        alertify.success(SUCCESS_LOGIN);
         history.push("/home");
       })
       .catch((err) => {
@@ -51,7 +48,6 @@ const Login = ({ history }) => {
             }}
             required
           />
-          <Form.Text className="text-muted">{NOT_SHARING}</Form.Text>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
