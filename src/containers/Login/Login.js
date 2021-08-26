@@ -13,9 +13,9 @@ import alertify from "alertifyjs";
 import { Link } from "react-router-dom";
 import "./Login.scss";
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { isLoggedIn } from "../../utils/functions";
 const Login = ({ history }) => {
-  const isLoggedIn = localStorage.getItem("user");
-  if (isLoggedIn) {
+  if (isLoggedIn()) {
     history.push("/home");
   }
   const [email, setEmail] = useState("");

@@ -10,10 +10,10 @@ import alertify from "alertifyjs";
 import { OverlayTrigger, Button, Tooltip } from "react-bootstrap";
 import { FiLogOut } from 'react-icons/fi';
 import { LOGOUT } from "../../labels/button";
+import { isLoggedIn } from "../../utils/functions";
 const Home = ({ history }) => {
   const [posts, setPosts] = useState([]);
-  const isLoggedIn = localStorage.getItem("user");
-  if(!isLoggedIn){
+  if(!isLoggedIn()){
     history.push("/");
   }
   const onAddNewPost = (newPost) => {
