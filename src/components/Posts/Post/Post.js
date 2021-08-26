@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Post.scss";
 import { LIKE_POST, DISLIKE_POST, DELETE_POST } from "../../../utils/constants";
 import moment from "moment";
-import axios from "axios";
+import API from "../../../api";
 import { Collapse, Dropdown } from "react-bootstrap";
 import Comments from "./Comments/Comments";
 import { BsChat } from 'react-icons/bs';
@@ -14,26 +14,18 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
   const [postLikedByCurrentUser, setPostLikedByCurrentUser] = useState(likes.includes(user?._id) ? <FcLike key={1} /> : <AiOutlineHeart key={2} />)
   const onHandleLike = (event) => {
     setPostLikedByCurrentUser(postLikedByCurrentUser.key === "1" ? <AiOutlineHeart key={2} /> : <FcLike key={1} />);
-    const config = {
-      headers: { Authorization: `Bearer ${user?.token}` },
-    };
-    axios
+    API
       .get(
-        `${process.env.REACT_APP_BASE_URL}${postLikedByCurrentUser.key === "1" ? DISLIKE_POST : LIKE_POST
-        }${postId}`,
-        config
+        `${postLikedByCurrentUser.key === "1" ? DISLIKE_POST : LIKE_POST
+        }${postId}`
       )
       .then()
       .catch((err) => console.error(err));
   };
   const onDeletePostHandler = () => {
-    const config = {
-      headers: { Authorization: `Bearer ${user?.token}` },
-    };
-    axios
+    API
       .delete(
-        `${process.env.REACT_APP_BASE_URL}${DELETE_POST}${postId}`,
-        config
+        `${DELETE_POST}${postId}`,
       )
       .then()
       .catch((err) => console.error(err));

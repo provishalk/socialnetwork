@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import AddPost from "../../components/Posts/AddPost/AddPost";
 import Post from "../../components/Posts/Post/Post";
 import "./Home.scss";
-import axios from "axios";
+import API from "../../api";
 import { GET_POSTS } from "../../utils/constants";
 import io from "socket.io-client";
 import _ from "lodash";
 import alertify from "alertifyjs";
 import { OverlayTrigger, Button, Tooltip } from "react-bootstrap";
 import { FiLogOut } from 'react-icons/fi';
-
+import { LOGOUT } from "../../labels/button";
 const Home = ({ history }) => {
   const [posts, setPosts] = useState([]);
   const isLoggedIn = localStorage.getItem("user");
@@ -55,13 +55,9 @@ const Home = ({ history }) => {
     history.push("/");
   };
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
     const socket = io.connect(`${process.env.REACT_APP_BASE_URL}`);
-    const config = {
-      headers: { Authorization: `Bearer ${user?.token}` },
-    };
-    axios
-      .get(`${process.env.REACT_APP_BASE_URL}${GET_POSTS}`, config)
+    API
+      .get(`${GET_POSTS}`)
       .then((res) => setPosts(res?.data?.data))
       .catch((err) => {
         console.log(err);
@@ -70,8 +66,8 @@ const Home = ({ history }) => {
         localStorage.clear();
       });
 
-    socket.on("new-like", (event) => {
-      onLikeHandler(event);
+    socket.on("new-like", (e) => {
+      onLikeHandler(e);
     });
 
     socket.on("new-post", (e) => {
@@ -123,7 +119,7 @@ const Home = ({ history }) => {
               <OverlayTrigger
                 placement="bottom"
                 overlay={
-                  <Tooltip>Logout</Tooltip>
+                  <Tooltip>{LOGOUT}</Tooltip>
                 }
               >
                 <Button variant="light" onClick={onLogoutHandler} className="home__logout-btn">

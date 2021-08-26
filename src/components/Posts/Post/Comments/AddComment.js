@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { WRITE_COMMENT, CREATE_COMMENT,SESSION_EXPIRED } from "../../../../utils/constants";
-import axios from "axios";
+import API from "../../../../api"
 import alertify from "alertifyjs";
 import { useHistory } from "react-router-dom";
 const AddComment = ({ postId }) => {
@@ -9,16 +9,11 @@ const AddComment = ({ postId }) => {
   const [newComment, setNewComment] = useState("");
   const onCommentSubmitHandler = (e) => {
     e.preventDefault();
-    const config = {
-      headers: { Authorization: `Bearer ${user?.token}` },
-    };
-
     const bodyParameters = { text: newComment };
-    axios
+    API
       .post(
-        `${process.env.REACT_APP_BASE_URL}${CREATE_COMMENT}${postId}`,
-        bodyParameters,
-        config
+        `${CREATE_COMMENT}${postId}`,
+        bodyParameters
       )
       .then(() => {
         setNewComment("");

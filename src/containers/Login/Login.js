@@ -20,11 +20,11 @@ const Login = ({ history }) => {
   }
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [passwordFeildType, setPasswordFeildType] = useState("password");
   const onSumbitHandler = (event) => {
-    setIsButtonClicked(true);
+    setIsLoading(true);
     event.preventDefault();
     event.target[2].disabled = true;
     const data = { email, password };
@@ -35,7 +35,7 @@ const Login = ({ history }) => {
         history.push("/home");
       })
       .catch((err) => {
-        setIsButtonClicked(false);
+        setIsLoading(false);
         alertify.warning(err.response.data.message);
         event.target[2].disabled = false;
       });
@@ -79,7 +79,7 @@ const Login = ({ history }) => {
         </Form.Group>
         <Form.Group className="d-flex justify-content-end">
           <Button variant="dark" type="submit" className="login__loginButton">
-            {isButtonClicked ? (<Spinner animation="border" variant="light" size="sm" />) : (<>{LOGIN}</>)}
+            {isLoading ? (<Spinner animation="border" variant="light" size="sm" />) : (<>{LOGIN}</>)}
           </Button>
         </Form.Group>
         <Form.Group className="text-center">

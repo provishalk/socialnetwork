@@ -1,40 +1,36 @@
 import React, { useState, useEffect } from "react";
 import "./AddPost.scss";
 import { ENTER_POST,CREATE_POST,SESSION_EXPIRED } from "../../../utils/constants";
-import axios from "axios";
 import alertify from "alertifyjs";
 import { useHistory } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
+import API from "../../../api"
 const AddPost = () => {
   let history = useHistory();
   const user = JSON.parse(localStorage.getItem("user"));
   const [text, setText] = useState("");
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const onPostClickHandler = (event) => {
     event.target.disabled = true;
-    setIsButtonClicked(true);
-    const config = {
-      headers: { Authorization: `Bearer ${user?.token}` },
-    };
-
+    setIsLoading(true);
     const bodyParameters = { text };
 
-    axios
+    API
       .post(
-        `${process.env.REACT_APP_BASE_URL}${CREATE_POST}`,
-        bodyParameters,
-        config
+        `${CREATE_POST}`,
+        bodyParameters
       )
       .then(() => {
         setText("");
-        setIsButtonClicked(false);
+        setIsLoading(false);
       })
       .catch((err) => {
         alertify.warning(err?.response?.data?.message);
         event.target.disabled = false;
-        setIsButtonClicked(false);
+        setIsLoading(false);
         if(err?.response?.data?.message===SESSION_EXPIRED){
           history.push("/");
+          localStorage.clear();
         }
       });
   };
@@ -70,7 +66,7 @@ const AddPost = () => {
               id="post-btn"
               onClick={onPostClickHandler}
             >
-              {isButtonClicked?(<Spinner animation="border" variant="light" size="sm" />):(<>Post</>)}
+              {isLoading?(<Spinner animation="border" variant="light" size="sm" />):(<>Post</>)}
             </button>
           </div>
         </div>

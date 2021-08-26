@@ -19,11 +19,11 @@ const Registration = ({ history }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [passwordFeildType, setPasswordFeildType] = useState("password");
   const onFormSubmitHandler = (event) => {
-    setIsButtonClicked(true);
+    setIsLoading(true);
     event.target[3].disabled = true;
     event.preventDefault();
     const data = { name, email, password };
@@ -36,7 +36,7 @@ const Registration = ({ history }) => {
       .catch((err) => {
         alertify.warning(err.response.data.message);
         event.target[3].disabled = false;
-        setIsButtonClicked(false);
+        setIsLoading(false);
       });
   };
   const onViewPassword = () => {
@@ -87,7 +87,7 @@ const Registration = ({ history }) => {
         </Form.Group>
         <Form.Group className="d-flex justify-content-end">
           <Button variant="dark" type="submit" className="registration_container__signupBtn">
-            {isButtonClicked ? (<Spinner animation="border" variant="light" size="sm" />) : (<>{SIGN_UP}</>)}
+            {isLoading ? (<Spinner animation="border" variant="light" size="sm" />) : (<>{SIGN_UP}</>)}
           </Button>
         </Form.Group>
         <Form.Group className="text-center">
