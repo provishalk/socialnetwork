@@ -1,28 +1,32 @@
 import React, { useState } from "react";
-import { WRITE_COMMENT, CREATE_COMMENT,SESSION_EXPIRED } from "../../../../utils/constants";
-import API from "../../../../api"
+import {
+  WRITE_COMMENT,
+  CREATE_COMMENT,
+  SESSION_EXPIRED,
+} from "../../../../utils/constants";
+import API from "../../../../utils/API";
 import alertify from "alertifyjs";
 import { useHistory } from "react-router-dom";
 const AddComment = ({ postId }) => {
   let history = useHistory();
   const user = JSON.parse(localStorage.getItem("user"));
   const [newComment, setNewComment] = useState("");
+
   const onCommentSubmitHandler = (e) => {
     e.preventDefault();
+    e.target[0].disabled=true;
     const bodyParameters = { text: newComment };
-    API
-      .post(
-        `${CREATE_COMMENT}${postId}`,
-        bodyParameters
-      )
+    API.post(`${CREATE_COMMENT}${postId}`, bodyParameters)
       .then(() => {
         setNewComment("");
       })
       .catch((err) => {
         alertify.warning(err?.response?.data?.message);
-        if(err?.response?.data?.message===SESSION_EXPIRED){
+        if (err?.response?.data?.message === SESSION_EXPIRED) {
           history.push("/");
         }
+      }).then(()=>{
+        e.target[0].disabled=false;
       });
   };
   return (

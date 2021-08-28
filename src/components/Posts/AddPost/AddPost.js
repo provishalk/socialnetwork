@@ -4,7 +4,7 @@ import { ENTER_POST,CREATE_POST,SESSION_EXPIRED } from "../../../utils/constants
 import alertify from "alertifyjs";
 import { useHistory } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
-import API from "../../../api"
+import API from "../../../utils/API"
 const AddPost = () => {
   let history = useHistory();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -14,10 +14,9 @@ const AddPost = () => {
     event.target.disabled = true;
     setIsLoading(true);
     const bodyParameters = { text };
-
     API
       .post(
-        `${CREATE_POST}`,
+        `${process.env.REACT_APP_BASE_URL}${CREATE_POST}`,
         bodyParameters
       )
       .then(() => {

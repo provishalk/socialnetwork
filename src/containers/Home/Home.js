@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import AddPost from "../../components/Posts/AddPost/AddPost";
 import Post from "../../components/Posts/Post/Post";
 import "./Home.scss";
-import API from "../../api";
+import API from "../../utils/API";
 import { GET_POSTS } from "../../utils/constants";
 import io from "socket.io-client";
 import _ from "lodash";
@@ -10,12 +10,9 @@ import alertify from "alertifyjs";
 import { OverlayTrigger, Button, Tooltip } from "react-bootstrap";
 import { FiLogOut } from 'react-icons/fi';
 import { LOGOUT } from "../../labels/button";
-import { isLoggedIn } from "../../utils/functions";
 const Home = ({ history }) => {
   const [posts, setPosts] = useState([]);
-  if(!isLoggedIn()){
-    history.push("/");
-  }
+
   const onAddNewPost = (newPost) => {
     setPosts((oldPosts) => [newPost, ...oldPosts]);
   };
@@ -43,6 +40,7 @@ const Home = ({ history }) => {
       return clonePosts;
     });
   };
+
   const onDeletePost = (deletedPost) => {
     setPosts((oldPosts) => {
       let clonePosts = _.cloneDeep(oldPosts);
@@ -50,14 +48,16 @@ const Home = ({ history }) => {
       return clonePosts;
     });
   };
+
   const onLogoutHandler = () => {
     localStorage.clear();
     history.push("/");
   };
+
   useEffect(() => {
     const socket = io.connect(`${process.env.REACT_APP_BASE_URL}`);
     API
-      .get(`${GET_POSTS}`)
+      .get(`${process.env.REACT_APP_BASE_URL}${GET_POSTS}`)
       .then((res) => setPosts(res?.data?.data))
       .catch((err) => {
         console.log(err);
@@ -103,12 +103,12 @@ const Home = ({ history }) => {
                 >
                   <Post
                     name={post?.user?.name}
-                    text={post.text}
-                    createdAt={post.createdAt}
+                    text={post?.text}
+                    createdAt={post?.createdAt}
                     likes={post?.likes}
                     postId={post?._id}
                     postedBy={post?.user}
-                    comments={post.comments}
+                    comments={post?.comments}
                   />
                 </div>
               );

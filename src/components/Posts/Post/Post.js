@@ -1,17 +1,23 @@
 import React, { useState } from "react";
-import "./Post.scss";
-import { LIKE_POST, DISLIKE_POST, DELETE_POST } from "../../../utils/constants";
 import moment from "moment";
-import API from "../../../api";
 import { Collapse, Dropdown } from "react-bootstrap";
-import Comments from "./Comments/Comments";
 import { BsChat } from 'react-icons/bs';
 import { FcLike } from 'react-icons/fc';
 import { AiOutlineHeart } from 'react-icons/ai';
+
+import Comments from "./Comments/Comments";
+
+import { LIKE_POST, DISLIKE_POST, DELETE_POST } from "../../../utils/constants";
+import API from "../../../utils/API";
+
+import "./Post.scss";
+import { DELETE } from "../../../labels/button";
+
 const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
   const [open, setOpen] = useState(false);
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user")); //
   const [postLikedByCurrentUser, setPostLikedByCurrentUser] = useState(likes.includes(user?._id) ? <FcLike key={1} /> : <AiOutlineHeart key={2} />)
+ 
   const onHandleLike = (event) => {
     setPostLikedByCurrentUser(postLikedByCurrentUser.key === "1" ? <AiOutlineHeart key={2} /> : <FcLike key={1} />);
     API
@@ -22,6 +28,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
       .then()
       .catch((err) => console.error(err));
   };
+  
   const onDeletePostHandler = () => {
     API
       .delete(
@@ -55,7 +62,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
               ></Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={onDeletePostHandler}>
-                  Delete
+                  {DELETE}
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
