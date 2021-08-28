@@ -1,39 +1,38 @@
 import React, { useState } from "react";
-import "./Post.scss";
-import { LIKE_POST, DISLIKE_POST, DELETE_POST } from "../../../utils/constants";
 import moment from "moment";
-import axios from "axios";
 import { Collapse, Dropdown } from "react-bootstrap";
-import Comments from "./Comments/Comments";
 import { BsChat } from 'react-icons/bs';
 import { FcLike } from 'react-icons/fc';
 import { AiOutlineHeart } from 'react-icons/ai';
+
+import Comments from "./Comments/Comments";
+
+import { LIKE_POST, DISLIKE_POST, DELETE_POST } from "../../../utils/constants";
+import API from "../../../utils/API";
+
+import "./Post.scss";
+import { DELETE } from "../../../labels/button";
+
 const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
   const [open, setOpen] = useState(false);
-  const user = JSON.parse(localStorage.getItem("user"));
-  const [postLikedByCurrentUser, setPostLikedByCurrentUser] = useState(likes.includes(user._id) ? <FcLike key={1} /> : <AiOutlineHeart key={2} />)
+  const user = JSON.parse(localStorage.getItem("user")); //
+  const [postLikedByCurrentUser, setPostLikedByCurrentUser] = useState(likes.includes(user?._id) ? <FcLike key={1} /> : <AiOutlineHeart key={2} />)
+ 
   const onHandleLike = (event) => {
     setPostLikedByCurrentUser(postLikedByCurrentUser.key === "1" ? <AiOutlineHeart key={2} /> : <FcLike key={1} />);
-    const config = {
-      headers: { Authorization: `Bearer ${user.token}` },
-    };
-    axios
+    API
       .get(
-        `${process.env.REACT_APP_BASE_URL}${postLikedByCurrentUser.key === "1" ? DISLIKE_POST : LIKE_POST
-        }${postId}`,
-        config
+        `${postLikedByCurrentUser.key === "1" ? DISLIKE_POST : LIKE_POST
+        }${postId}`
       )
       .then()
       .catch((err) => console.error(err));
   };
+  
   const onDeletePostHandler = () => {
-    const config = {
-      headers: { Authorization: `Bearer ${user.token}` },
-    };
-    axios
+    API
       .delete(
-        `${process.env.REACT_APP_BASE_URL}${DELETE_POST}${postId}`,
-        config
+        `${DELETE_POST}${postId}`,
       )
       .then()
       .catch((err) => console.error(err));
@@ -53,7 +52,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
           <p className="post__user-name">{name}</p>
           <span>·</span>
           <p className="post__post-time">{moment(createdAt).fromNow(true)}</p>
-          {postedBy._id === user._id ? (
+          {postedBy._id === user?._id ? (
             <Dropdown className="post__dropdown">
               <Dropdown.Toggle
                 className="post__dropdown post__dropdowm-btn"
@@ -63,7 +62,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
               ></Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={onDeletePostHandler}>
-                  Delete
+                  {DELETE}
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>

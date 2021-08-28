@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import AddPost from "../../components/Posts/AddPost/AddPost";
 import Post from "../../components/Posts/Post/Post";
 import "./Home.scss";
-import axios from "axios";
+import API from "../../utils/API";
 import { GET_POSTS } from "../../utils/constants";
 import io from "socket.io-client";
 import _ from "lodash";
 import alertify from "alertifyjs";
 import { OverlayTrigger, Button, Tooltip } from "react-bootstrap";
-
+import { FiLogOut } from 'react-icons/fi';
+import { LOGOUT } from "../../labels/button";
 const Home = ({ history }) => {
   const [posts, setPosts] = useState([]);
+
   const onAddNewPost = (newPost) => {
     setPosts((oldPosts) => [newPost, ...oldPosts]);
   };
@@ -38,6 +40,7 @@ const Home = ({ history }) => {
       return clonePosts;
     });
   };
+
   const onDeletePost = (deletedPost) => {
     setPosts((oldPosts) => {
       let clonePosts = _.cloneDeep(oldPosts);
@@ -45,18 +48,16 @@ const Home = ({ history }) => {
       return clonePosts;
     });
   };
+
   const onLogoutHandler = () => {
     localStorage.clear();
     history.push("/");
   };
+
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
     const socket = io.connect(`${process.env.REACT_APP_BASE_URL}`);
-    const config = {
-      headers: { Authorization: `Bearer ${user.token}` },
-    };
-    axios
-      .get(`${process.env.REACT_APP_BASE_URL}${GET_POSTS}`, config)
+    API
+      .get(`${process.env.REACT_APP_BASE_URL}${GET_POSTS}`)
       .then((res) => setPosts(res?.data?.data))
       .catch((err) => {
         console.log(err);
@@ -65,29 +66,29 @@ const Home = ({ history }) => {
         localStorage.clear();
       });
 
-    socket.on("new-like", (event) => {
-      onLikeHandler(event);
+    socket.on("new-like", (e) => {
+      onLikeHandler(e);
     });
 
     socket.on("new-post", (e) => {
       onAddNewPost(e);
     });
 
-    socket.on("new-comment", (e) => {
+    socket.on("comments", (e) => {
       onAddNewComment(e);
     });
 
     socket.on("delete-post", (e) => {
       onDeletePost(e);
     });
-  }, [history]);
-
+  }, []);
+  
   return (
     <>
       <div className="container-fluid">
         <div className="row">
           <div className="col-0 col-xl-3"></div>
-          <div className="col col-md-6 col-xl-5 home__posts-container p-0">
+          <div className="col col-md-6 col-xl-6 px-4 home__posts-container p-0">
             <div className="col m-auto  p-2 font-weight-bold home__cards">
               <h4>Home</h4>
             </div>
@@ -102,27 +103,27 @@ const Home = ({ history }) => {
                 >
                   <Post
                     name={post?.user?.name}
-                    text={post.text}
-                    createdAt={post.createdAt}
+                    text={post?.text}
+                    createdAt={post?.createdAt}
                     likes={post?.likes}
                     postId={post?._id}
                     postedBy={post?.user}
-                    comments={post.comments}
+                    comments={post?.comments}
                   />
                 </div>
               );
             })}
           </div>
-          <div className="col-0 col-md-3 col-xl-4 d-flex home__logout">
+          <div className="col-0 col-md-3 col-xl-3 d-flex home__logout">
             <div className="ml-auto">
               <OverlayTrigger
                 placement="bottom"
                 overlay={
-                  <Tooltip>Logout</Tooltip>
+                  <Tooltip>{LOGOUT}</Tooltip>
                 }
               >
-                <Button variant="light" onClick={onLogoutHandler}>
-                  Logout
+                <Button variant="light" onClick={onLogoutHandler} className="home__logout-btn">
+                  <FiLogOut/>
                 </Button>
               </OverlayTrigger>
             </div>

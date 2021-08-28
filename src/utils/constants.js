@@ -28,3 +28,4 @@ export const AGREEMENT =
 //Message
 export const SUCCESS_LOGIN = "Login Successfully";
 export const SOMETHING_WRONG = "Something went wrong!";
+export const SESSION_EXPIRED = "Session expired please login again"

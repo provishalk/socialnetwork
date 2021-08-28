@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Registration.scss";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, InputGroup } from "react-bootstrap";
 import axios from "axios";
 import alertify from "alertifyjs";
 
@@ -14,13 +14,16 @@ import { SIGN_UP } from "../../labels/button";
 import AuthWrapper from "../../hoc/AuthWrapper/AuthWrapper";
 import { Link } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 const Registration = ({ history }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [passwordFeildType, setPasswordFeildType] = useState("password");
   const onFormSubmitHandler = (event) => {
-    setIsButtonClicked(true);
+    setIsLoading(true);
     event.target[3].disabled = true;
     event.preventDefault();
     const data = { name, email, password };
@@ -33,9 +36,13 @@ const Registration = ({ history }) => {
       .catch((err) => {
         alertify.warning(err.response.data.message);
         event.target[3].disabled = false;
-        setIsButtonClicked(false);
+        setIsLoading(false);
       });
   };
+  const onViewPassword = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+    isPasswordVisible ? setPasswordFeildType("password") : setPasswordFeildType("text");
+  }
   return (
     <AuthWrapper>
       <h3 className="text-center mb-4">Create Account</h3>
@@ -63,19 +70,24 @@ const Registration = ({ history }) => {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Control
-            type="password"
-            placeholder={ENTER_PASSWORD}
-            value={password}
-            onChange={(event) => {
-              setPassword(event.target.value);
-            }}
-            required
-          />
+          <InputGroup>
+            <Form.Control
+              type={passwordFeildType}
+              placeholder={ENTER_PASSWORD}
+              value={password}
+              onChange={(event) => {
+                setPassword(event.target.value);
+              }}
+              required
+            />
+            <InputGroup.Text className="login__password-eye" onClick={onViewPassword}>
+              {isPasswordVisible ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+            </InputGroup.Text>
+          </InputGroup>
         </Form.Group>
         <Form.Group className="d-flex justify-content-end">
           <Button variant="dark" type="submit" className="registration_container__signupBtn">
-            {isButtonClicked ? (<Spinner animation="border" variant="light" size="sm" />) : (<>{SIGN_UP}</>)}
+            {isLoading ? (<Spinner animation="border" variant="light" size="sm" />) : (<>{SIGN_UP}</>)}
           </Button>
         </Form.Group>
         <Form.Group className="text-center">
