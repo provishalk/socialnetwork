@@ -13,11 +13,16 @@
     &__user {
         @include post-font;
         display: flex;
+        align-items: center;
+    }
+    &__dot{
+        color: gray;
     }
 
     &__post-time {
         @include post-font;
         color: gray;
+        font-size: 15px;
     }
 
     &__content {
@@ -58,5 +63,16 @@
                 padding: 5px;
             }
         }
+    }
+}
+.post-container{
+    display: flex;
+    &__left-container{
+        width: 48px;
+        margin-left:8px;
+    }
+    &__right-container{
+        padding-left:10px;
+        width: 100%;
     }
 }

@@ -36,7 +36,7 @@ const Login = ({ history }) => {
       })
       .catch((err) => {
         setIsLoading(false);
-        alertify.warning(err.response.data.message);
+        alertify.warning(err?.response?.data?.message);
         event.target[2].disabled = false;
       });
   };

@@ -3,6 +3,7 @@ import {
   WRITE_COMMENT,
   CREATE_COMMENT,
   SESSION_EXPIRED,
+  DEFAULT_USER_PROFILE,
 } from "../../../../utils/constants";
 import API from "../../../../utils/API";
 import alertify from "alertifyjs";
@@ -33,7 +34,7 @@ const AddComment = ({ postId }) => {
     <>
       <div className="col-1 comments__userprofile">
         <img
-          src={`${process.env.REACT_APP_PROFILE_PIC_URL}${user?._id}`}
+          src={DEFAULT_USER_PROFILE}
           alt="profile"
           className="comments__profile"
         />

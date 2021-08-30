@@ -61,7 +61,7 @@ const Home = ({ history }) => {
       .then((res) => setPosts(res?.data?.data))
       .catch((err) => {
         console.log(err);
-        alertify.warning(err.response.data.message);
+        alertify.warning(err?.response?.data?.message);
         history.push("/");
         localStorage.clear();
       });
@@ -89,16 +89,16 @@ const Home = ({ history }) => {
         <div className="row">
           <div className="col-0 col-xl-3"></div>
           <div className="col col-md-6 col-xl-6 px-4 home__posts-container p-0">
-            <div className="col m-auto  p-2 font-weight-bold home__cards">
+            <div className="col m-auto p-2 home__cards">
               <h4>Home</h4>
             </div>
-            <div className="col m-auto  p-2 font-weight-bold home__cards">
+            <div className="col m-auto p-2 home__cards">
               <AddPost />
             </div>
             {posts.map((post) => {
               return (
                 <div
-                  className="col m-auto  p-2 font-weight-bold home__cards"
+                  className="col m-auto p-2 home__cards"
                   key={post._id}
                 >
                   <Post

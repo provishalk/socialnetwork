@@ -31,8 +31,12 @@
     }
 
     &__btn {
-        width: 100px;
+        width: 76px;
         padding: 3px;
+        border-radius: 20px;
+        margin-right: 10px;
+        margin-bottom: 4px;
+        height: 34px;
         display: flex;
         margin-left: auto;
         justify-content: center;
@@ -42,11 +46,19 @@
 
     &__img {
         width: 100%;
-        min-width: 38px;
         border-radius: 50%;
         border: 1px solid rgb(216, 216, 216);
     }
-    &__col-adjustment{
-        margin-left: auto;
+}
+.addpost{
+    display: flex;
+    &__leftPart {
+        width: 48px;
+        margin-left:8px;
+    }
+    &__rightPart {
+        padding-left:10px;
+        padding-top: 9px;
+        width: 100%;
     }
 }
