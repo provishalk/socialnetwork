@@ -4,17 +4,22 @@ import { BsChat } from 'react-icons/bs';
 import { FcLike } from 'react-icons/fc';
 import { AiOutlineHeart } from 'react-icons/ai';
 import Comments from "./Comments/Comments";
-import { LIKE_POST, DISLIKE_POST, DELETE_POST, DEFAULT_USER_PROFILE } from "../../../utils/constants";
+import {
+  LIKE_POST,
+  DISLIKE_POST,
+  DELETE_POST,
+  DEFAULT_USER_PROFILE
+} from "../../../utils/constants";
 import API from "../../../utils/API";
 import "./Post.scss";
 import { DELETE } from "../../../labels/button";
-import {getActualTime} from "../../../utils/functions";
+import { getActualTime } from "../../../utils/functions";
 
 const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
   const [open, setOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem("user")); //
   const [postLikedByCurrentUser, setPostLikedByCurrentUser] = useState(likes.includes(user?._id) ? <FcLike key={1} /> : <AiOutlineHeart key={2} />)
- 
+
   const onHandleLike = (event) => {
     setPostLikedByCurrentUser(postLikedByCurrentUser.key === "1" ? <AiOutlineHeart key={2} /> : <FcLike key={1} />);
     API
@@ -25,7 +30,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
       .then()
       .catch((err) => console.error(err));
   };
-  
+
   const onDeletePostHandler = () => {
     API
       .delete(
@@ -36,7 +41,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
   };
 
   return (
-    <div className="post-container" key={postId}> 
+    <div className="post-container" key={postId}>
       <div className="post-container__left-container">
         <img
           src={DEFAULT_USER_PROFILE}

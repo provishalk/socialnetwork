@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./AddPost.scss";
-import { ENTER_POST, CREATE_POST, SESSION_EXPIRED } from "../../../utils/constants";
+import { ENTER_POST, CREATE_POST, SESSION_EXPIRED, DEFAULT_USER_PROFILE } from "../../../utils/constants";
 import alertify from "alertifyjs";
 import { useHistory } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
 import API from "../../../utils/API"
-import { DEFAULT_USER_PROFILE } from "../../../utils/constants";
 const AddPost = () => {
   let history = useHistory();
-  const user = JSON.parse(localStorage.getItem("user"));
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const onPostClickHandler = (event) => {
