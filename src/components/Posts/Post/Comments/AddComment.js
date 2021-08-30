@@ -10,7 +10,6 @@ import alertify from "alertifyjs";
 import { useHistory } from "react-router-dom";
 const AddComment = ({ postId }) => {
   let history = useHistory();
-  const user = JSON.parse(localStorage.getItem("user"));
   const [newComment, setNewComment] = useState("");
 
   const onCommentSubmitHandler = (e) => {
