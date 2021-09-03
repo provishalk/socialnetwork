@@ -3,7 +3,7 @@ import { Collapse, Dropdown } from "react-bootstrap";
 import { BsChat } from 'react-icons/bs';
 import { FcLike } from 'react-icons/fc';
 import { AiOutlineHeart } from 'react-icons/ai';
-import Comments from "./Comments/Comments";
+import Comments from "./Comments/Comment";
 import {
   LIKE_POST,
   DISLIKE_POST,

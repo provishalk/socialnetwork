@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { FiLogOut } from "react-icons/fi";
+import { OverlayTrigger, Button, Tooltip } from "react-bootstrap";
+import io from "socket.io-client";
+import _ from "lodash";
+import alertify from "alertifyjs";
 import AddPost from "../../components/Posts/AddPost/AddPost";
 import Post from "../../components/Posts/Post/Post";
 import "./Home.scss";
 import API from "../../utils/API";
 import { GET_POSTS } from "../../utils/constants";
-import io from "socket.io-client";
-import _ from "lodash";
-import alertify from "alertifyjs";
-import { OverlayTrigger, Button, Tooltip } from "react-bootstrap";
-import { FiLogOut } from "react-icons/fi";
 import { LOGOUT } from "../../labels/button";
 import Profile from "../../components/User/Profile/Profile";
 import PostLoading from "../../components/Posts/PostLoading/PostLoading";
 const Home = ({ history }) => {
-  const forLoopPurpose = [1, 2, 3, 4, 5, 6];
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const onAddNewPost = (newPost) => {
@@ -105,7 +104,7 @@ const Home = ({ history }) => {
             <AddPost />
           </div>
           {isLoading &&
-            forLoopPurpose.map(() => {
+            [...Array(6)].map(() => {
               return (
                 <div className="col m-auto p-2 home__cards">
                   <PostLoading />
