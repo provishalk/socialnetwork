@@ -1,0 +1,13 @@
+.user-profile{
+    width:100px;
+    text-align: center;
+    margin-top: 27px;
+    margin-right: 27px;
+    &__img{
+        width: 100%;
+        border-radius: 50%;
+    }
+    &__name{
+        font-weight: 600;
+    }
+}

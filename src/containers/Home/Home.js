@@ -8,11 +8,14 @@ import io from "socket.io-client";
 import _ from "lodash";
 import alertify from "alertifyjs";
 import { OverlayTrigger, Button, Tooltip } from "react-bootstrap";
-import { FiLogOut } from 'react-icons/fi';
+import { FiLogOut } from "react-icons/fi";
 import { LOGOUT } from "../../labels/button";
+import Profile from "../../components/User/Profile/Profile";
+import PostLoading from "../../components/Posts/PostLoading/PostLoading";
 const Home = ({ history }) => {
+  const forLoopPurpose = [1, 2, 3, 4, 5, 6];
   const [posts, setPosts] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true);
   const onAddNewPost = (newPost) => {
     setPosts((oldPosts) => [newPost, ...oldPosts]);
   };
@@ -53,12 +56,17 @@ const Home = ({ history }) => {
     localStorage.clear();
     history.push("/");
   };
+  useEffect(() => {
+    console.log("UseEffect without dependency");
+  });
 
   useEffect(() => {
     const socket = io.connect(`${process.env.REACT_APP_BASE_URL}`);
-    API
-      .get(`${process.env.REACT_APP_BASE_URL}${GET_POSTS}`)
-      .then((res) => setPosts(res?.data?.data))
+    API.get(`${process.env.REACT_APP_BASE_URL}${GET_POSTS}`)
+      .then((res) => {
+        setPosts(res?.data?.data);
+        setIsLoading(false);
+      })
       .catch((err) => {
         console.log(err);
         alertify.warning(err?.response?.data?.message);
@@ -82,51 +90,58 @@ const Home = ({ history }) => {
       onDeletePost(e);
     });
   }, []);
-  
+
   return (
     <>
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-0 col-xl-3"></div>
-          <div className="col col-md-6 col-xl-6 px-4 home__posts-container p-0">
-            <div className="col m-auto p-2 home__cards">
-              <h4>Home</h4>
-            </div>
-            <div className="col m-auto p-2 home__cards">
-              <AddPost />
-            </div>
-            {posts.map((post) => {
+      <div className="home">
+        <div className="home__left-container">
+          <Profile />
+        </div>
+        <div className="home__center-container">
+          <div className="col m-auto p-2 home__cards home_disable-hover">
+            <h4>Home</h4>
+          </div>
+          <div className="col m-auto p-2 home__cards">
+            <AddPost />
+          </div>
+          {isLoading &&
+            forLoopPurpose.map(() => {
               return (
-                <div
-                  className="col m-auto p-2 home__cards"
-                  key={post._id}
-                >
-                  <Post
-                    name={post?.user?.name}
-                    text={post?.text}
-                    createdAt={post?.createdAt}
-                    likes={post?.likes}
-                    postId={post?._id}
-                    postedBy={post?.user}
-                    comments={post?.comments}
-                  />
+                <div className="col m-auto p-2 home__cards">
+                  <PostLoading />
                 </div>
               );
             })}
-          </div>
-          <div className="col-0 col-md-3 col-xl-3 d-flex home__logout">
-            <div className="ml-auto">
-              <OverlayTrigger
-                placement="bottom"
-                overlay={
-                  <Tooltip>{LOGOUT}</Tooltip>
-                }
+          {posts.map((post) => {
+            return (
+              <div className="col m-auto p-2 home__cards" key={post._id}>
+                <Post
+                  name={post?.user?.name}
+                  text={post?.text}
+                  createdAt={post?.createdAt}
+                  likes={post?.likes}
+                  postId={post?._id}
+                  postedBy={post?.user}
+                  comments={post?.comments}
+                />
+              </div>
+            );
+          })}
+        </div>
+        <div className="home__right-container">
+          <div className="ml-auto">
+            <OverlayTrigger
+              placement="bottom"
+              overlay={<Tooltip>{LOGOUT}</Tooltip>}
+            >
+              <Button
+                variant="light"
+                onClick={onLogoutHandler}
+                className="home__logout-btn"
               >
-                <Button variant="light" onClick={onLogoutHandler} className="home__logout-btn">
-                  <FiLogOut/>
-                </Button>
-              </OverlayTrigger>
-            </div>
+                <FiLogOut />
+              </Button>
+            </OverlayTrigger>
           </div>
         </div>
       </div>
