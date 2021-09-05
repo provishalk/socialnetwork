@@ -1,23 +1,25 @@
 import React, { useState } from "react";
-import moment from "moment";
 import { Collapse, Dropdown } from "react-bootstrap";
 import { BsChat } from 'react-icons/bs';
 import { FcLike } from 'react-icons/fc';
 import { AiOutlineHeart } from 'react-icons/ai';
-
-import Comments from "./Comments/Comments";
-
-import { LIKE_POST, DISLIKE_POST, DELETE_POST } from "../../../utils/constants";
+import Comments from "./Comments/Comment";
+import {
+  LIKE_POST,
+  DISLIKE_POST,
+  DELETE_POST,
+  DEFAULT_USER_PROFILE
+} from "../../../utils/constants";
 import API from "../../../utils/API";
-
 import "./Post.scss";
 import { DELETE } from "../../../labels/button";
+import { getActualTime } from "../../../utils/functions";
 
 const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
   const [open, setOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem("user")); //
   const [postLikedByCurrentUser, setPostLikedByCurrentUser] = useState(likes.includes(user?._id) ? <FcLike key={1} /> : <AiOutlineHeart key={2} />)
- 
+
   const onHandleLike = (event) => {
     setPostLikedByCurrentUser(postLikedByCurrentUser.key === "1" ? <AiOutlineHeart key={2} /> : <FcLike key={1} />);
     API
@@ -28,7 +30,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
       .then()
       .catch((err) => console.error(err));
   };
-  
+
   const onDeletePostHandler = () => {
     API
       .delete(
@@ -39,19 +41,19 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
   };
 
   return (
-    <div className="row" key={postId}>
-      <div className="col-1">
+    <div className="post-container" key={postId}>
+      <div className="post-container__left-container">
         <img
-          src={`${process.env.REACT_APP_PROFILE_PIC_URL}${postedBy._id}`}
+          src={DEFAULT_USER_PROFILE}
           alt="profile"
           className="addpost-container__img"
         />
       </div>
-      <div className="col-10 col-sm-10 col-lg-11 addpost-container__col-adjustment">
+      <div className="post-container__right-container">
         <div className="post__user">
           <p className="post__user-name">{name}</p>
-          <span>·</span>
-          <p className="post__post-time">{moment(createdAt).fromNow(true)}</p>
+          <span className="mx-1 post__dot">·</span>
+          <p className="post__post-time">{getActualTime(createdAt)}</p>
           {postedBy._id === user?._id ? (
             <Dropdown className="post__dropdown">
               <Dropdown.Toggle
