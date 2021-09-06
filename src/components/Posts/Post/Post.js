@@ -17,7 +17,7 @@ import { getActualTime } from "../../../utils/functions";
 
 const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
   const [open, setOpen] = useState(false);
-  const user = JSON.parse(localStorage.getItem("user")); //
+  const user = JSON.parse(localStorage.getItem("user"));
   const [postLikedByCurrentUser, setPostLikedByCurrentUser] = useState(likes.includes(user?._id) ? <FcLike key={1} /> : <AiOutlineHeart key={2} />)
 
   const onHandleLike = (event) => {

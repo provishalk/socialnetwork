@@ -88,7 +88,7 @@ const Home = ({ history }) => {
     socket.on("delete-post", (e) => {
       onDeletePost(e);
     });
-  }, []);
+  }, [history]);
 
   return (
     <>

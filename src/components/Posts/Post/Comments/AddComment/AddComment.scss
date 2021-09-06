@@ -1,0 +1,14 @@
+.add-comment{
+    display: flex;
+    img{
+        border-radius: 50%;
+        width: 100%;
+    }
+    &__left-container{
+        width: 38px;
+    }
+    &__right-container{
+        width: 100%;
+        margin-left: 6px;
+    }
+}

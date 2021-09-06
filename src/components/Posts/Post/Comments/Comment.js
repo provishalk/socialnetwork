@@ -1,16 +1,16 @@
 import React from "react";
-import OldComments from "./Comments";
-import "./Comments.scss";
-import AddComment from "./AddComment";
-const Comments = ({ comments, postId }) => {
+import Comments from "./Comments";
+import "./Comment.scss";
+import AddComment from "./AddComment/AddComment";
+const Comment = ({ comments, postId }) => {
   return (
     <div className="row">
       <AddComment postId={postId} />
       {comments.map((comment) => {
-        return <OldComments comment={comment} key={comment._id} />;
+        return <Comments comment={comment} key={comment._id} />;
       })}
     </div>
   );
 };
 
-export default Comments;
+export default Comment;

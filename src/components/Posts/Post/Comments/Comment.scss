@@ -17,11 +17,7 @@
 
     &__profile {
         width: 100%;
-        max-height: 34px;
-        max-width: 34px;
-        min-width: 30px;
         border-radius: 50%;
-        border: 1px solid rgb(216, 216, 216);
     }
 
     &__userprofile {
@@ -47,5 +43,14 @@
             margin: 0;
         }
 
+    }
+}
+.comments-container{
+    display: flex;
+    &__left-container{
+        width: 35px;
+    }
+    &__right-container{
+        margin-left: 6px;
     }
 }
