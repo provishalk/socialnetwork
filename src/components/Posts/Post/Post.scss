@@ -29,6 +29,12 @@
         font-size: 14px;
     }
     
+    &__expend-text{
+        margin-left: 3px;
+        font-size: 31px;
+        line-height: 0;
+        cursor: pointer;
+    }
 
     &__dropdown {
         margin-left: auto;

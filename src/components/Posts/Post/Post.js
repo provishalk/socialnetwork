@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Collapse, Dropdown } from "react-bootstrap";
 import { BsChat } from 'react-icons/bs';
 import { FcLike } from 'react-icons/fc';
@@ -16,10 +16,17 @@ import { DELETE } from "../../../labels/button";
 import { getActualTime } from "../../../utils/functions";
 
 const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
-  const [open, setOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
+  const [open, setOpen] = useState(false);
+  const [postContent, setPostContent] = useState(text);
   const [postLikedByCurrentUser, setPostLikedByCurrentUser] = useState(likes.includes(user?._id) ? <FcLike key={1} /> : <AiOutlineHeart key={2} />)
-
+  const [shrinkText, setShrinkText] = useState(false);
+  useEffect(() => {
+    if (postContent.length > 300) {
+      setPostContent(postContent.substring(0, 250));
+      setShrinkText(true);
+    }
+  }, [])
   const onHandleLike = (event) => {
     setPostLikedByCurrentUser(postLikedByCurrentUser.key === "1" ? <AiOutlineHeart key={2} /> : <FcLike key={1} />);
     API
@@ -73,7 +80,21 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
           )}
         </div>
         <div>
-          <p className="post__content">{text}</p>
+          <p className="post__content">
+            {postContent}
+            {
+              shrinkText &&
+              <span
+                className="post__expend-text"
+                onClick={() => { 
+                  setPostContent(text);
+                  setShrinkText(false);
+                   }}>
+                ...
+              </span>
+            }
+
+          </p>
         </div>
         <div className="d-flex">
           <div>
