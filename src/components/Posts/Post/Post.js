@@ -25,8 +25,8 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
     if (postContent.length > 300) {
       setPostContent(postContent.substring(0, 250));
       setShrinkText(true);
-    }
-  }, [])
+      }
+    }, [])
   const onHandleLike = (event) => {
     setPostLikedByCurrentUser(postLikedByCurrentUser.key === "1" ? <AiOutlineHeart key={2} /> : <FcLike key={1} />);
     API

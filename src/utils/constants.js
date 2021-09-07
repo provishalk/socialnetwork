@@ -11,6 +11,7 @@ export const DISLIKE_POST = "/api/post/dislike/";
 export const GET_POSTS = "/api/post/get-posts";
 export const CREATE_COMMENT = "/api/post/add-comment/";
 export const DELETE_POST = "/api/post/delete/";
+export const USER_IMG = "/api/user/upload-profile-image";
 
 //Placeholders
 export const ENTER_NAME = "Enter Full Name";

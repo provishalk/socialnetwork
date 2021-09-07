@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import AuthWrapper from "../../hoc/AuthWrapper/AuthWrapper";
+import axios from "axios";
+import alertify from "alertifyjs";
+import Spinner from 'react-bootstrap/Spinner';
+import { Link } from "react-router-dom";
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { Button, Form, InputGroup } from "react-bootstrap";
+import AuthWrapper from "../../hoc/AuthWrapper/AuthWrapper";
 import {
   ENTER_EMAIL,
   ENTER_PASSWORD,
   USER_LOGIN,
 } from "../../utils/constants";
-import Spinner from 'react-bootstrap/Spinner';
 import { LOGIN } from "../../labels/button";
-import axios from "axios";
-import alertify from "alertifyjs";
-import { Link } from "react-router-dom";
-import "./Login.scss";
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { isLoggedIn } from "../../utils/functions";
+import "./Login.scss";
 const Login = ({ history }) => {
   if (isLoggedIn()) {
     history.push("/home");
@@ -26,7 +26,6 @@ const Login = ({ history }) => {
   const onSumbitHandler = (event) => {
     setIsLoading(true);
     event.preventDefault();
-    event.target[2].disabled = true;
     const data = { email, password };
     axios
       .post(`${process.env.REACT_APP_BASE_URL}${USER_LOGIN}`, data)
@@ -37,7 +36,6 @@ const Login = ({ history }) => {
       .catch((err) => {
         setIsLoading(false);
         alertify.warning(err?.response?.data?.message);
-        event.target[2].disabled = false;
       });
   };
   const onViewPassword = () => {
@@ -78,7 +76,7 @@ const Login = ({ history }) => {
           </InputGroup>
         </Form.Group>
         <Form.Group className="d-flex justify-content-end">
-          <Button variant="dark" type="submit" className="login__loginButton">
+          <Button variant="dark" type="submit" className="login__loginButton" disabled={isLoading}>
             {isLoading ? (<Spinner animation="border" variant="light" size="sm" />) : (<>{LOGIN}</>)}
           </Button>
         </Form.Group>

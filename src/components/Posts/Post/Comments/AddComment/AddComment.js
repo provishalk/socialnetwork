@@ -12,10 +12,10 @@ import "./AddComment.scss"
 const AddComment = ({ postId }) => {
   let history = useHistory();
   const [newComment, setNewComment] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const onCommentSubmitHandler = (e) => {
     e.preventDefault();
-    e.target[0].disabled = true;
+    setLoading(true);
     const bodyParameters = { text: newComment };
     API.post(`${CREATE_COMMENT}${postId}`, bodyParameters)
       .then(() => {
@@ -27,7 +27,7 @@ const AddComment = ({ postId }) => {
           history.push("/");
         }
       }).then(() => {
-        e.target[0].disabled = false;
+        setLoading(false);
       });
   };
   return (
@@ -45,6 +45,7 @@ const AddComment = ({ postId }) => {
             className="comments__new-comment"
             placeholder={WRITE_COMMENT}
             value={newComment}
+            disabled={loading}
             onChange={(event) => {
               setNewComment(event.target.value);
             }}
