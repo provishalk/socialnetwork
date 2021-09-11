@@ -15,5 +15,5 @@ export const getActualTime = (postedTime) =>{
 
 export const getUserImgFromLocalStorage = () =>{
     const user = JSON.parse(localStorage.getItem("user"));
-    return user.imgUrl ? user.imgUrl : DEFAULT_USER_PROFILE;
+    return user?.imgUrl ? `${user?.imgUrl}?${Date.now()}` : DEFAULT_USER_PROFILE;
 }

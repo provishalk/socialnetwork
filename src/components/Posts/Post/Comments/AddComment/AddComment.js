@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   WRITE_COMMENT,
   CREATE_COMMENT,
-  SESSION_EXPIRED,
-  DEFAULT_USER_PROFILE,
+  SESSION_EXPIRED
 } from "../../../../../utils/constants";
 import API from "../../../../../utils/API";
 import alertify from "alertifyjs";
 import { useHistory } from "react-router-dom";
+import UserImgContext from "../../../../../contextStore/UserImgContext";
 import "./AddComment.scss"
 const AddComment = ({ postId }) => {
   let history = useHistory();
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
+  const { userImg } = useContext(UserImgContext);
 
   const onCommentSubmitHandler = (e) => {
     e.preventDefault();
@@ -41,7 +42,7 @@ const AddComment = ({ postId }) => {
       <div className="add-comment">
         <div className="add-comment__left-container">
           <img
-            src={DEFAULT_USER_PROFILE}
+            src={userImg}
             alt="profile"
           />
         </div>

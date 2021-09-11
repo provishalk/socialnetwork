@@ -12,11 +12,15 @@ import { LOGOUT } from "../../labels/button";
 import { HOME } from "../../labels/headings";
 import Profile from "../../components/User/Profile/Profile";
 import PostLoading from "../../components/Posts/PostLoading/PostLoading";
+import { getUserImgFromLocalStorage } from "../../utils/functions";
+import UserImgContext from "../../contextStore/UserImgContext";
 import "./Home.scss";
+
 const Home = ({ history }) => {
   const DUMMY_ARRAY = [1, 2, 3, 4, 5, 6];
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [userImg, setUserImg] = useState(getUserImgFromLocalStorage());
 
   const onAddNewPost = (newPost) => {
     setPosts((oldPosts) => [newPost, ...oldPosts]);
@@ -91,7 +95,7 @@ const Home = ({ history }) => {
   }, [history]);
 
   return (
-    <>
+    <UserImgContext.Provider value={{ userImg, setUserImg }}>
       <div className="home">
         <div className="home__left-container">
           <Profile />
@@ -145,7 +149,8 @@ const Home = ({ history }) => {
           </div>
         </div>
       </div>
-    </>
+    </UserImgContext.Provider>
+
   );
 };
 

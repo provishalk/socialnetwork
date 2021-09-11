@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
-import "./Profile.scss"
+import React, { useState, useContext } from 'react';
 import AddProfileImage from "../../../components/User/AddProfileImage/AddProfileImage";
-import { getUserImgFromLocalStorage } from '../../../utils/functions';
-const Profile = ({ userImg }) => {
+import UserImgContext from '../../../contextStore/UserImgContext';
+import "./Profile.scss"
+const Profile = () => {
   const [modalShow, setModalShow] = useState(false);
+  const { userImg } = useContext(UserImgContext);
   const user = JSON.parse(localStorage.getItem("user"));
+  
   return (
     <div className="user-profile">
       <img
-        src={getUserImgFromLocalStorage()}
+        src={userImg}
         alt="User"
         className="user-profile__img"
         onClick={() => setModalShow(true)} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Collapse, Dropdown } from "react-bootstrap";
 import { BsChat } from 'react-icons/bs';
 import { FcLike } from 'react-icons/fc';
@@ -14,15 +14,18 @@ import API from "../../../utils/API";
 import "./Post.scss";
 import { DELETE } from "../../../labels/button";
 import { getActualTime } from "../../../utils/functions";
+import UserImgContext from "../../../contextStore/UserImgContext";
 
 const Post = ({ name, text, createdAt, likes, postId, postedBy, comments, userImgUrl }) => {
   const user = JSON.parse(localStorage.getItem("user"));
+  const { userImg } = useContext(UserImgContext);
   const [open, setOpen] = useState(false);
   const [postContent, setPostContent] = useState(text);
   const [postLikedByCurrentUser, setPostLikedByCurrentUser] = useState(likes.includes(user?._id) ? <FcLike key={1} /> : <AiOutlineHeart key={2} />)
   const [shrinkText, setShrinkText] = useState(false);
   const textLength = text.length;
   const userProfile = userImgUrl ? userImgUrl : DEFAULT_USER_PROFILE;
+  
   useEffect(() => {
     if (textLength > 300) {
       setPostContent((oldPost) => { return oldPost.substring(0, 250) });
@@ -54,7 +57,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments, userIm
     <div className="post-container" key={postId}>
       <div className="post-container__left-container">
         <img
-          src={userProfile}
+          src={postedBy._id === user?._id ? userImg : userProfile}
           alt="profile"
           className="addpost-container__img"
         />

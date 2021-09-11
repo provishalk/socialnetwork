@@ -11,7 +11,7 @@ const Comment = ({ comment }) => {
         <img
           src={userProfile}
           alt="profile"
-          className="comments__profile mt-2"
+          className="comments__profile"
         />
       </div>
         <div className="comments-container__right-container comments__old-comments my-2">

@@ -1,17 +1,20 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState,useContext } from 'react'
 import { useDropzone } from 'react-dropzone'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import "./AddProfileImage.scss";
 import { CHANGE_PROFILE, DEFAULT_USER_PROFILE, DRAG_AND_DROP, DROP_FILE, USER_IMG, SELECT_IMG } from "../../../utils/constants";
 import API from "../../../utils/API";
 import alertify from "alertifyjs";
 import { CHANGE } from '../../../labels/button';
+import UserImgContext from '../../../contextStore/UserImgContext';
+import "./AddProfileImage.scss";
+
 const AddProfileImage = ({ show, onHide }) => {
   const [acceptedFile, setAcceptedFile] = useState(DEFAULT_USER_PROFILE);
   const [selected, setSelected] = useState(false);
   const [base64String, setBase64String] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const { setUserImg } = useContext(UserImgContext);
 
   const onDrop = useCallback(inputFiles => {
     if (inputFiles[0].type.includes("image")) {
@@ -31,10 +34,11 @@ const AddProfileImage = ({ show, onHide }) => {
     }
   }, [])
 
-  const onChangeImgLocal = (newImg) =>{
+  const onChangeImgLocal = (newImg) => {
     const oldLocalStorage = JSON.parse(localStorage.getItem("user"));
     oldLocalStorage.imgUrl = `${newImg}?${Date.now()}`;
     localStorage.setItem("user", JSON.stringify(oldLocalStorage));
+    setUserImg(`${newImg}?${Date.now()}`);
   }
 
   const imgUploadHandler = () => {
@@ -95,7 +99,9 @@ const AddProfileImage = ({ show, onHide }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onChangeHandler}
-          variant="dark" disabled={isUploading}>{CHANGE}</Button>
+          variant="dark" disabled={isUploading}>
+          {CHANGE}
+        </Button>
       </Modal.Footer>
     </Modal>
   )

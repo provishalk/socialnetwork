@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./AddPost.scss";
-import { ENTER_POST, CREATE_POST, SESSION_EXPIRED, DEFAULT_USER_PROFILE } from "../../../utils/constants";
+import { ENTER_POST, CREATE_POST, SESSION_EXPIRED } from "../../../utils/constants";
 import alertify from "alertifyjs";
 import { useHistory } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
 import API from "../../../utils/API"
+import UserImgContext from "../../../contextStore/UserImgContext";
+
 const AddPost = () => {
   let history = useHistory();
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
-  const user = JSON.parse(localStorage.getItem("user"));
-  const userProfile = user.imgUrl ? user.imgUrl : DEFAULT_USER_PROFILE;
+  const { userImg } = useContext(UserImgContext);
 
-  const onPostClickHandler = (event) => {
+  const onPostClickHandler = () => {
     setIsLoading(true);
     setDisabled(true);
     const bodyParameters = { text };
@@ -43,7 +44,7 @@ const AddPost = () => {
       <div className="addpost">
         <div className="addpost__leftPart">
           <img
-            src={userProfile}
+            src={userImg}
             alt="profile"
             className="addpost-container__img"
           />
