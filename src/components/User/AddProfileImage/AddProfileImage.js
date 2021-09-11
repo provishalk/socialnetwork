@@ -1,8 +1,9 @@
-import React, { useCallback, useState,useContext } from 'react'
+import React, { useCallback, useState, useContext } from 'react'
 import { useDropzone } from 'react-dropzone'
+import Spinner from 'react-bootstrap/Spinner';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { CHANGE_PROFILE, DEFAULT_USER_PROFILE, DRAG_AND_DROP, DROP_FILE, USER_IMG, SELECT_IMG } from "../../../utils/constants";
+import { CHANGE_PROFILE, DEFAULT_USER_PROFILE, DRAG_AND_DROP, DROP_FILE, USER_IMG, SELECT_IMG, ONLY_IMG } from "../../../utils/constants";
 import API from "../../../utils/API";
 import alertify from "alertifyjs";
 import { CHANGE } from '../../../labels/button';
@@ -25,12 +26,12 @@ const AddProfileImage = ({ show, onHide }) => {
       reader.onload = function () {
         let base64Str = reader.result.replace("data:", "")
           .replace(/^.+,/, "");
-        setBase64String("data:image/png;base64," + base64Str);
+        setBase64String(`data:image/png;base64,${base64Str}`);
       }
       reader.readAsDataURL(file);
     }
     else {
-      alertify.error("Only IMG");
+      alertify.error(ONLY_IMG);
     }
   }, [])
 
@@ -64,6 +65,7 @@ const AddProfileImage = ({ show, onHide }) => {
     }
     else {
       alertify.warning(SELECT_IMG);
+      setIsUploading(false);
     }
   }
 
@@ -98,9 +100,11 @@ const AddProfileImage = ({ show, onHide }) => {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onChangeHandler}
+        <Button
+          className="add-profile__btn"
+          onClick={onChangeHandler}
           variant="dark" disabled={isUploading}>
-          {CHANGE}
+          {isUploading ? (<Spinner animation="border" variant="light" size="sm" />) : (<>{CHANGE}</>)}
         </Button>
       </Modal.Footer>
     </Modal>

@@ -1,15 +1,17 @@
-import React from "react";
+import React,{useContext} from "react";
 import { DEFAULT_USER_PROFILE } from "../../../../utils/constants";
-
+import UserImgContext from "../../../../contextStore/UserImgContext";
 const Comment = ({ comment }) => {
+  const { userImg } = useContext(UserImgContext);
   const userImgUrl = comment?.user?.imgUrl;
   const userProfile = userImgUrl ? userImgUrl : DEFAULT_USER_PROFILE;
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <>
     <div className="comments-container">
       <div className="comments-container__left-container">
         <img
-          src={userProfile}
+          src={comment?.user?._id === user?._id ? userImg : userProfile}
           alt="profile"
           className="comments__profile"
         />

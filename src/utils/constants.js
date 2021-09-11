@@ -34,6 +34,7 @@ export const SUCCESS_LOGIN = "Login Successfully";
 export const SOMETHING_WRONG = "Something went wrong!";
 export const SESSION_EXPIRED = "Session expired please login again";
 export const SELECT_IMG = "Please Select Img First";
+export const ONLY_IMG = "Only IMG";
 
 //URLs
 export const DEFAULT_USER_PROFILE = "https://www.personality-insights.com/wp-content/uploads/2017/12/default-profile-pic-e1513291410505.jpg"
