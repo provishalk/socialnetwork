@@ -13,6 +13,7 @@ const AddComment = ({ postId }) => {
   let history = useHistory();
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
+
   const onCommentSubmitHandler = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -30,6 +31,11 @@ const AddComment = ({ postId }) => {
         setLoading(false);
       });
   };
+
+  const onEnterComment = (event) => {
+    setNewComment(event.target.value);
+  }
+
   return (
     <>
       <div className="add-comment">
@@ -46,9 +52,7 @@ const AddComment = ({ postId }) => {
             placeholder={WRITE_COMMENT}
             value={newComment}
             disabled={loading}
-            onChange={(event) => {
-              setNewComment(event.target.value);
-            }}
+            onChange={onEnterComment}
             required
           />
         </form>

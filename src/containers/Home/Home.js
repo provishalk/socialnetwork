@@ -6,15 +6,18 @@ import _ from "lodash";
 import alertify from "alertifyjs";
 import AddPost from "../../components/Posts/AddPost/AddPost";
 import Post from "../../components/Posts/Post/Post";
-import "./Home.scss";
 import API from "../../utils/API";
 import { GET_POSTS } from "../../utils/constants";
 import { LOGOUT } from "../../labels/button";
+import { HOME } from "../../labels/headings";
 import Profile from "../../components/User/Profile/Profile";
 import PostLoading from "../../components/Posts/PostLoading/PostLoading";
+import "./Home.scss";
 const Home = ({ history }) => {
+  const DUMMY_ARRAY = [1, 2, 3, 4, 5, 6];
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
   const onAddNewPost = (newPost) => {
     setPosts((oldPosts) => [newPost, ...oldPosts]);
   };
@@ -55,9 +58,6 @@ const Home = ({ history }) => {
     localStorage.clear();
     history.push("/");
   };
-  useEffect(() => {
-    console.log("UseEffect without dependency");
-  });
 
   useEffect(() => {
     const socket = io.connect(`${process.env.REACT_APP_BASE_URL}`);
@@ -98,15 +98,15 @@ const Home = ({ history }) => {
         </div>
         <div className="home__center-container">
           <div className="col m-auto p-2 home__cards home_disable-hover">
-            <h4>Home</h4>
+            <h4>{HOME}</h4>
           </div>
           <div className="col m-auto p-2 home__cards">
             <AddPost />
           </div>
           {isLoading &&
-            [...Array(6)].map(() => {
+            DUMMY_ARRAY.map((key) => {
               return (
-                <div className="col m-auto p-2 home__cards">
+                <div className="col m-auto p-2 home__cards" key={key}>
                   <PostLoading />
                 </div>
               );
@@ -122,6 +122,7 @@ const Home = ({ history }) => {
                   postId={post?._id}
                   postedBy={post?.user}
                   comments={post?.comments}
+                  userImgUrl={post?.user?.imgUrl}
                 />
               </div>
             );
