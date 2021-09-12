@@ -33,7 +33,7 @@ export const AGREEMENT =
 export const SUCCESS_LOGIN = "Login Successfully";
 export const SOMETHING_WRONG = "Something went wrong!";
 export const SESSION_EXPIRED = "Session expired please login again";
-export const SELECT_IMG = "Please Select Img First";
+export const SELECT_IMG = "Please Select Image First";
 export const ONLY_IMG = "Only IMG";
 
 //URLs

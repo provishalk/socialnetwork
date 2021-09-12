@@ -28,6 +28,7 @@
     }
 
     &__old-comments {
+        flex-grow: 1;
         background: rgba(224, 224, 224, 0.219);
         border-radius: 10px;
         padding: 5px;
