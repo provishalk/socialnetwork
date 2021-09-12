@@ -39,11 +39,12 @@ const Home = ({ history }) => {
   };
 
   const onAddNewComment = (newComment) => {
+    const sortedComments = _.orderBy(newComment.comments, ['createdAt'],['desc']);
     setPosts((oldPosts) => {
       let clonePosts = _.cloneDeep(oldPosts);
       _.forEach(clonePosts, (post) => {
         if (post._id === newComment._id) {
-          post.comments = newComment.comments;
+          post.comments = sortedComments;
         }
       });
       return clonePosts;

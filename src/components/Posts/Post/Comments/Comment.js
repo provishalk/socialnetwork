@@ -1,6 +1,7 @@
 import React,{useContext} from "react";
 import { DEFAULT_USER_PROFILE } from "../../../../utils/constants";
 import UserImgContext from "../../../../contextStore/UserImgContext";
+import { getActualTime } from "../../../../utils/functions";
 const Comment = ({ comment }) => {
   const { userImg } = useContext(UserImgContext);
   const userImgUrl = comment?.user?.imgUrl;
@@ -21,6 +22,8 @@ const Comment = ({ comment }) => {
             <p className="comments__old-comments__user-name">
               {comment.user.name}
             </p>
+            <span className="mx-1">·</span>
+            <p className="comment__comment-time">{getActualTime(comment.createdAt)}</p>
           </div>
           <p>{comment.text}</p>
         </div>
