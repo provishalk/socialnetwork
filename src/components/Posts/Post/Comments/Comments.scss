@@ -57,3 +57,11 @@
         margin-left: 6px;
     }
 }
+
+.comment{
+    &__comment-time{
+        margin: 0;
+        color: gray;
+        font-size: 1rem;
+    }
+}
