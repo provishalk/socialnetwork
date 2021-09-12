@@ -1,18 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import "./AddPost.scss";
 import { ENTER_POST, CREATE_POST, SESSION_EXPIRED } from "../../../utils/constants";
 import alertify from "alertifyjs";
 import { useHistory } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
 import API from "../../../utils/API"
-import UserImgContext from "../../../contextStore/UserImgContext";
 
 const AddPost = () => {
   let history = useHistory();
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
-  const { userImg } = useContext(UserImgContext);
 
   const onPostClickHandler = () => {
     setIsLoading(true);
@@ -42,13 +40,6 @@ const AddPost = () => {
   return (
     <>
       <div className="addpost">
-        <div className="addpost__leftPart">
-          <img
-            src={userImg}
-            alt="profile"
-            className="addpost-container__img"
-          />
-        </div>
         <div className="addpost__rightPart">
           <textarea
             id="post"
