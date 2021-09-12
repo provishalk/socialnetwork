@@ -1,15 +1,28 @@
-import React from 'react'
-import { DEFAULT_USER_PROFILE } from '../../../utils/constants'
+import React, { useState, useContext } from 'react';
+import AddProfileImage from "../../../components/User/AddProfileImage/AddProfileImage";
+import UserImgContext from '../../../contextStore/UserImgContext';
 import "./Profile.scss"
 const Profile = () => {
-    return (
-        <div className="user-profile">
-            <div>
-               <img src={DEFAULT_USER_PROFILE} alt="User" className="user-profile__img"/> 
-            </div>
-            <span className="user-profile__name">Vishal Kumar</span>
-        </div>
-    )
+  const [modalShow, setModalShow] = useState(false);
+  const { userImg } = useContext(UserImgContext);
+  const user = JSON.parse(localStorage.getItem("user"));
+  
+  return (
+    <div className="user-profile">
+      <img
+        src={userImg}
+        alt="User"
+        className="user-profile__img"
+        onClick={() => setModalShow(true)} />
+      <span className="user-profile__name">{user.name}</span>
+      <AddProfileImage
+        show={modalShow}
+        onHide={() => {
+          setModalShow(false)
+        }}
+      />
+    </div>
+  )
 }
 
 export default Profile

@@ -1,28 +1,16 @@
 import React from "react";
-import { DEFAULT_USER_PROFILE } from "../../../../utils/constants";
-
-const OldComments = ({ comment }) => {
+import Comment from "./Comment";
+import AddComment from "./AddComment/AddComment";
+import "./Comments.scss";
+const Comments= ({ comments, postId }) => {
   return (
-    <>
-      <div className="col-1">
-        <img
-          src={DEFAULT_USER_PROFILE}
-          alt="profile"
-          className="comments__profile mt-2"
-        />
-      </div>
-      <div className="col-11 d-flex">
-        <div className="comments__old-comments my-2">
-          <div className="d-flex">
-            <p className="comments__old-comments__user-name">
-              {comment.user.name}
-            </p>
-          </div>
-          <p>{comment.text}</p>
-        </div>
-      </div>
-    </>
+    <div className="row">
+      <AddComment postId={postId} />
+      {comments.map((comment) => {
+        return <Comment comment={comment} key={comment?._id} />;
+      })}
+    </div>
   );
 };
 
-export default OldComments;
+export default Comments;

@@ -28,6 +28,13 @@
     &__content {
         font-size: 14px;
     }
+    
+    &__expend-text{
+        margin-left: 3px;
+        font-size: 31px;
+        line-height: 0;
+        cursor: pointer;
+    }
 
     &__dropdown {
         margin-left: auto;
@@ -46,7 +53,7 @@
         background-color: rgba(255, 255, 255, 0);
 
         img {
-            width: 100%;
+            width: 48px;
         }
 
         &__like-count {
@@ -69,6 +76,7 @@
     display: flex;
     &__left-container{
         width: 48px;
+        height: 48px;
         margin-left:8px;
     }
     &__right-container{

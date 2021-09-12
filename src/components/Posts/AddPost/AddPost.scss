@@ -45,15 +45,18 @@
     }
 
     &__img {
-        width: 100%;
+        width: 48px;
+        height: 100%;
         border-radius: 50%;
         border: 1px solid rgb(216, 216, 216);
+        object-fit: cover;
     }
 }
 .addpost{
     display: flex;
     &__leftPart {
         width: 48px;
+        height: 48px;
         margin-left:8px;
     }
     &__rightPart {

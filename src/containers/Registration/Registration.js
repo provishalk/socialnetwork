@@ -24,7 +24,6 @@ const Registration = ({ history }) => {
   const [passwordFeildType, setPasswordFeildType] = useState("password");
   const onFormSubmitHandler = (event) => {
     setIsLoading(true);
-    event.target[3].disabled = true;
     event.preventDefault();
     const data = { name, email, password };
     axios
@@ -35,7 +34,6 @@ const Registration = ({ history }) => {
       })
       .catch((err) => {
         alertify.warning(err.response.data.message);
-        event.target[3].disabled = false;
         setIsLoading(false);
       });
   };
@@ -86,7 +84,7 @@ const Registration = ({ history }) => {
           </InputGroup>
         </Form.Group>
         <Form.Group className="d-flex justify-content-end">
-          <Button variant="dark" type="submit" className="registration_container__signupBtn">
+          <Button variant="dark" type="submit" className="registration_container__signupBtn" disabled={isLoading}>
             {isLoading ? (<Spinner animation="border" variant="light" size="sm" />) : (<>{SIGN_UP}</>)}
           </Button>
         </Form.Group>

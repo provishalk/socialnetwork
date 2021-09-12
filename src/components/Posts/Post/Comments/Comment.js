@@ -1,16 +1,32 @@
-import React from "react";
-import OldComments from "./Comments";
-import "./Comments.scss";
-import AddComment from "./AddComment";
-const Comments = ({ comments, postId }) => {
+import React,{useContext} from "react";
+import { DEFAULT_USER_PROFILE } from "../../../../utils/constants";
+import UserImgContext from "../../../../contextStore/UserImgContext";
+const Comment = ({ comment }) => {
+  const { userImg } = useContext(UserImgContext);
+  const userImgUrl = comment?.user?.imgUrl;
+  const userProfile = userImgUrl ? userImgUrl : DEFAULT_USER_PROFILE;
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
-    <div className="row">
-      <AddComment postId={postId} />
-      {comments.map((comment) => {
-        return <OldComments comment={comment} key={comment._id} />;
-      })}
-    </div>
+    <>
+    <div className="comments-container">
+      <div className="comments-container__left-container">
+        <img
+          src={comment?.user?._id === user?._id ? userImg : userProfile}
+          alt="profile"
+          className="comments__profile"
+        />
+      </div>
+        <div className="comments-container__right-container comments__old-comments my-2">
+          <div className="d-flex">
+            <p className="comments__old-comments__user-name">
+              {comment.user.name}
+            </p>
+          </div>
+          <p>{comment.text}</p>
+        </div>
+      </div>
+    </>
   );
 };
 
-export default Comments;
+export default Comment;

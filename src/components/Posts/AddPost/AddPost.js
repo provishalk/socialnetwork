@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./AddPost.scss";
-import { ENTER_POST, CREATE_POST, SESSION_EXPIRED, DEFAULT_USER_PROFILE } from "../../../utils/constants";
+import { ENTER_POST, CREATE_POST, SESSION_EXPIRED } from "../../../utils/constants";
 import alertify from "alertifyjs";
 import { useHistory } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
 import API from "../../../utils/API"
+import UserImgContext from "../../../contextStore/UserImgContext";
+
 const AddPost = () => {
   let history = useHistory();
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const onPostClickHandler = (event) => {
-    event.target.disabled = true;
+  const [disabled, setDisabled] = useState(true);
+  const { userImg } = useContext(UserImgContext);
+
+  const onPostClickHandler = () => {
     setIsLoading(true);
+    setDisabled(true);
     const bodyParameters = { text };
     API
       .post(
@@ -24,7 +29,6 @@ const AddPost = () => {
       })
       .catch((err) => {
         alertify.warning(err?.response?.data?.message);
-        event.target.disabled = false;
         setIsLoading(false);
         if (err?.response?.data?.message === SESSION_EXPIRED) {
           history.push("/");
@@ -33,15 +37,14 @@ const AddPost = () => {
       });
   };
   useEffect(() => {
-    document.querySelector("#post-btn").disabled =
-      text.length !== 0 ? false : true;
+    setDisabled(text.length !== 0 ? false : true);
   }, [text]);
   return (
     <>
       <div className="addpost">
         <div className="addpost__leftPart">
           <img
-            src={DEFAULT_USER_PROFILE}
+            src={userImg}
             alt="profile"
             className="addpost-container__img"
           />
@@ -62,6 +65,7 @@ const AddPost = () => {
             className="btn btn-dark addpost-container__btn"
             id="post-btn"
             onClick={onPostClickHandler}
+            disabled={disabled}
           >
             {isLoading ? (<Spinner animation="border" variant="light" size="sm" />) : (<>Post</>)}
           </button>

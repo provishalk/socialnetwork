@@ -4,3 +4,4 @@ export const LOGIN = "Login";
 export const RESEND = "Resend?";
 export const LOGOUT = "Logout";
 export const DELETE = "Delete";
+export const CHANGE = "Change";

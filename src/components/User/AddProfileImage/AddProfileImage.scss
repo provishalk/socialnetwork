@@ -1,0 +1,25 @@
+.add-profile {
+  &__profile-pic {
+    display: flex;
+    justify-content: center;
+    img {
+      border-radius: 50%;
+      height: 130px;
+      width: 130px;
+      object-fit: cover;
+    }
+    margin-bottom: 16px;
+  }
+  &__input-img {
+    padding: 5px;
+    min-height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: x-large;
+  }
+  &__btn{
+    min-width: 80px;
+  }
+}

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Collapse, Dropdown } from "react-bootstrap";
 import { BsChat } from 'react-icons/bs';
 import { FcLike } from 'react-icons/fc';
 import { AiOutlineHeart } from 'react-icons/ai';
-import Comments from "./Comments/Comment";
+import Comments from "./Comments/Comments";
 import {
   LIKE_POST,
   DISLIKE_POST,
@@ -14,11 +14,24 @@ import API from "../../../utils/API";
 import "./Post.scss";
 import { DELETE } from "../../../labels/button";
 import { getActualTime } from "../../../utils/functions";
+import UserImgContext from "../../../contextStore/UserImgContext";
 
-const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
+const Post = ({ name, text, createdAt, likes, postId, postedBy, comments, userImgUrl }) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const { userImg } = useContext(UserImgContext);
   const [open, setOpen] = useState(false);
-  const user = JSON.parse(localStorage.getItem("user")); //
+  const [postContent, setPostContent] = useState(text);
   const [postLikedByCurrentUser, setPostLikedByCurrentUser] = useState(likes.includes(user?._id) ? <FcLike key={1} /> : <AiOutlineHeart key={2} />)
+  const [shrinkText, setShrinkText] = useState(false);
+  const textLength = text.length;
+  const userProfile = userImgUrl ? userImgUrl : DEFAULT_USER_PROFILE;
+  
+  useEffect(() => {
+    if (textLength > 300) {
+      setPostContent((oldPost) => { return oldPost.substring(0, 250) });
+      setShrinkText(true);
+    }
+  }, [textLength])
 
   const onHandleLike = (event) => {
     setPostLikedByCurrentUser(postLikedByCurrentUser.key === "1" ? <AiOutlineHeart key={2} /> : <FcLike key={1} />);
@@ -44,7 +57,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
     <div className="post-container" key={postId}>
       <div className="post-container__left-container">
         <img
-          src={DEFAULT_USER_PROFILE}
+          src={postedBy._id === user?._id ? userImg : userProfile}
           alt="profile"
           className="addpost-container__img"
         />
@@ -73,7 +86,21 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments }) => {
           )}
         </div>
         <div>
-          <p className="post__content">{text}</p>
+          <p className="post__content">
+            {postContent}
+            {
+              shrinkText &&
+              <span
+                className="post__expend-text"
+                onClick={() => {
+                  setPostContent(text);
+                  setShrinkText(false);
+                }}>
+                ...
+              </span>
+            }
+
+          </p>
         </div>
         <div className="d-flex">
           <div>
