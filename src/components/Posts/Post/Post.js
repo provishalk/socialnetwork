@@ -91,7 +91,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments, userIm
                   size="sm"
                 ></Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={onDeletePostHandler}>
+                  <Dropdown.Item>
                     {ADD_FRIEND}
                   </Dropdown.Item>
                 </Dropdown.Menu>
