@@ -12,7 +12,7 @@ import {
 } from "../../../utils/constants";
 import API from "../../../utils/API";
 import "./Post.scss";
-import { DELETE } from "../../../labels/button";
+import { ADD_FRIEND, DELETE } from "../../../labels/button";
 import { getActualTime } from "../../../utils/functions";
 import UserImgContext from "../../../contextStore/UserImgContext";
 
@@ -25,7 +25,7 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments, userIm
   const [shrinkText, setShrinkText] = useState(false);
   const textLength = text.length;
   const userProfile = userImgUrl ? userImgUrl : DEFAULT_USER_PROFILE;
-  
+
   useEffect(() => {
     if (textLength > 300) {
       setPostContent((oldPost) => { return oldPost.substring(0, 250) });
@@ -82,7 +82,21 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments, userIm
               </Dropdown.Menu>
             </Dropdown>
           ) : (
-            <></>
+            <>
+              <Dropdown className="post__dropdown">
+                <Dropdown.Toggle
+                  className="post__dropdown post__dropdowm-btn"
+                  variant="light"
+                  id="dropdown-basic"
+                  size="sm"
+                ></Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={onDeletePostHandler}>
+                    {ADD_FRIEND}
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </>
           )}
         </div>
         <div>

@@ -1,17 +1,19 @@
-.add-comment{
-    display: flex;
-    img{
-        border-radius: 50%;
-        width: 38px;
-        height: 38px;
-        object-fit: cover;
-    }
-    &__left-container{
-        width: 38px;
-    }
-    &__right-container{
-        width: 100%;
-        margin-left: 6px;
-        align-self: center;
-    }
+.add-comment {
+  display: flex;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  img {
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    object-fit: cover;
+  }
+  &__left-container {
+    width: 38px;
+  }
+  &__right-container {
+    width: 100%;
+    margin-left: 6px;
+    align-self: center;
+  }
 }
