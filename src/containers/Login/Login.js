@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
 import alertify from "alertifyjs";
-import Spinner from 'react-bootstrap/Spinner';
+import Spinner from "react-bootstrap/Spinner";
 import { Link } from "react-router-dom";
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import AuthWrapper from "../../hoc/AuthWrapper/AuthWrapper";
 import {
   ENTER_EMAIL,
   ENTER_PASSWORD,
+  FORGET_PASSWORD,
   USER_LOGIN,
 } from "../../utils/constants";
-import { LOGIN } from "../../labels/button";
+import { LOGIN, SIGN_UP } from "../../labels/button";
 import { isLoggedIn } from "../../utils/functions";
 import "./Login.scss";
 const Login = ({ history }) => {
@@ -22,8 +23,8 @@ const Login = ({ history }) => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [passwordFeildType, setPasswordFeildType] = useState("password");
-  const onSumbitHandler = (event) => {
+  const [passwordFieldType, setPasswordFieldType] = useState("password");
+  const onSubmitHandler = (event) => {
     setIsLoading(true);
     event.preventDefault();
     const data = { email, password };
@@ -40,12 +41,14 @@ const Login = ({ history }) => {
   };
   const onViewPassword = () => {
     setIsPasswordVisible(!isPasswordVisible);
-    isPasswordVisible?setPasswordFeildType("password"):setPasswordFeildType("text");
-  }
+    isPasswordVisible
+      ? setPasswordFieldType("password")
+      : setPasswordFieldType("text");
+  };
   return (
     <AuthWrapper>
       <h3 className="text-center mb-4 ">{LOGIN}</h3>
-      <Form className="mt-4" onSubmit={onSumbitHandler}>
+      <Form className="mt-4" onSubmit={onSubmitHandler}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control
             type="email"
@@ -61,7 +64,7 @@ const Login = ({ history }) => {
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <InputGroup>
             <Form.Control
-              type={passwordFeildType}
+              type={passwordFieldType}
               className="login__password-input"
               placeholder={ENTER_PASSWORD}
               value={password}
@@ -70,21 +73,33 @@ const Login = ({ history }) => {
               }}
               required
             />
-            <InputGroup.Text className="login__password-eye" onClick={onViewPassword}>
+            <InputGroup.Text
+              className="login__password-eye"
+              onClick={onViewPassword}
+            >
               {isPasswordVisible ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
             </InputGroup.Text>
           </InputGroup>
         </Form.Group>
         <Form.Group className="d-flex justify-content-end">
-          <Button variant="dark" type="submit" className="login__loginButton" disabled={isLoading}>
-            {isLoading ? (<Spinner animation="border" variant="light" size="sm" />) : (<>{LOGIN}</>)}
+          <Button
+            variant="dark"
+            type="submit"
+            className="login__loginButton"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <Spinner animation="border" variant="light" size="sm" />
+            ) : (
+              <>{LOGIN}</>
+            )}
           </Button>
         </Form.Group>
         <Form.Group className="text-center">
           <Form.Text>
-            Forgot password? ·{" "}
+            {FORGET_PASSWORD} ·{" "}
             <Link to="/signup" className="login__link">
-              Sign up
+              {SIGN_UP}
             </Link>
           </Form.Text>
         </Form.Group>

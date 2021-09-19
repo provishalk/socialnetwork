@@ -7,6 +7,7 @@ import {
   ENTER_OTP,
   ACCOUNT_ACTIVATE,
   RESEND_OTP,
+  ACCOUNT_ACTIVATION,
 } from "../../utils/constants";
 import { ACTIVATE, RESEND } from "../../labels/button";
 import AuthWrapper from "../../hoc/AuthWrapper/AuthWrapper";
@@ -21,11 +22,14 @@ const Activate = ({ history }) => {
     axios
       .post(`${process.env.REACT_APP_BASE_URL}${ACCOUNT_ACTIVATE}`, data)
       .then((res) => {
-        alertify.success(res.data.message);
+        alertify.success(res?.data?.message);
         history.push("/");
       })
       .catch((err) => {
-        alertify.warning(err.response.data.message);
+        alertify.warning(err?.response?.data?.message);
+        if (err?.response?.data?.message.includes("already activated")) {
+          history.push("/");
+        }
       });
   };
   const onResentCode = () => {
@@ -46,7 +50,7 @@ const Activate = ({ history }) => {
   };
   return (
     <AuthWrapper>
-      <h1 className="text-center mb-4">Account Activation</h1>
+      <h1 className="text-center mb-4">{ACCOUNT_ACTIVATION}</h1>
       <Form onSubmit={onClickHandler} className="mt-4">
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control

@@ -1,0 +1,38 @@
+.notification {
+  &__items {
+    min-height: fit-content;
+    line-height: 1rem;
+    padding: 4px;
+    list-style-type: none;
+    margin-bottom: 0;
+    &__btn-container {
+      align-self: center;
+    }
+    &__list {
+      font-size: 14px;
+      padding: 4px;
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      &__btn {
+        border: none;
+        color: white;
+        background-color: #1da1f2;
+        height: 2rem;
+        width: 3rem;
+        border-radius: 6px;
+        svg {
+          width: 70%;
+          height: 70%;
+        }
+        &:active {
+          background-color: #1974ad;
+          color: rgb(211, 211, 211);
+        }
+      }
+    }
+    &__list-container {
+      justify-content: space-between;
+    }
+  }
+}

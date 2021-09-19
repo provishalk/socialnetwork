@@ -8,13 +8,14 @@ import {
   USER_SIGNUP,
   ENTER_NAME,
   ENTER_EMAIL,
-  ENTER_PASSWORD
+  ENTER_PASSWORD,
+  ALREADY_HAVE_ACCOUNT,
 } from "../../utils/constants";
-import { SIGN_UP } from "../../labels/button";
+import { ACTIVATE, LOGIN, SIGN_UP } from "../../labels/button";
 import AuthWrapper from "../../hoc/AuthWrapper/AuthWrapper";
 import { Link } from "react-router-dom";
-import Spinner from 'react-bootstrap/Spinner';
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import Spinner from "react-bootstrap/Spinner";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 const Registration = ({ history }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -39,8 +40,10 @@ const Registration = ({ history }) => {
   };
   const onViewPassword = () => {
     setIsPasswordVisible(!isPasswordVisible);
-    isPasswordVisible ? setPasswordFeildType("password") : setPasswordFeildType("text");
-  }
+    isPasswordVisible
+      ? setPasswordFeildType("password")
+      : setPasswordFeildType("text");
+  };
   return (
     <AuthWrapper>
       <h3 className="text-center mb-4">Create Account</h3>
@@ -78,21 +81,37 @@ const Registration = ({ history }) => {
               }}
               required
             />
-            <InputGroup.Text className="login__password-eye" onClick={onViewPassword}>
+            <InputGroup.Text
+              className="login__password-eye"
+              onClick={onViewPassword}
+            >
               {isPasswordVisible ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
             </InputGroup.Text>
           </InputGroup>
         </Form.Group>
         <Form.Group className="d-flex justify-content-end">
-          <Button variant="dark" type="submit" className="registration_container__signupBtn" disabled={isLoading}>
-            {isLoading ? (<Spinner animation="border" variant="light" size="sm" />) : (<>{SIGN_UP}</>)}
+          <Button
+            variant="dark"
+            type="submit"
+            className="registration_container__signupBtn"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <Spinner animation="border" variant="light" size="sm" />
+            ) : (
+              <>{SIGN_UP}</>
+            )}
           </Button>
         </Form.Group>
         <Form.Group className="text-center">
           <Form.Text>
-            Already have account? ·{" "}
+            {ALREADY_HAVE_ACCOUNT} ·{" "}
+            <Link to="/activate" className="login__link">
+              {ACTIVATE }
+            </Link>{" "}
+            ·{" "}
             <Link to="/" className="login__link">
-              Login
+              {LOGIN}
             </Link>
           </Form.Text>
         </Form.Group>

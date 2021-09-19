@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FiLogOut } from "react-icons/fi";
+import { BsFillBellFill } from "react-icons/bs";
 import { OverlayTrigger, Button, Tooltip } from "react-bootstrap";
 import io from "socket.io-client";
 import _ from "lodash";
@@ -7,11 +8,12 @@ import alertify from "alertifyjs";
 import AddPost from "../../components/Posts/AddPost/AddPost";
 import Post from "../../components/Posts/Post/Post";
 import API from "../../utils/API";
-import { GET_POSTS } from "../../utils/constants";
+import { FRIEND_LIST, GET_POSTS } from "../../utils/constants";
 import { LOGOUT } from "../../labels/button";
 import { HOME } from "../../labels/headings";
 import Profile from "../../components/User/Profile/Profile";
 import PostLoading from "../../components/Posts/PostLoading/PostLoading";
+import Notification from "../../components/Notification/Notification";
 import { getUserImgFromLocalStorage } from "../../utils/functions";
 import UserImgContext from "../../contextStore/UserImgContext";
 import "./Home.scss";
@@ -21,6 +23,12 @@ const Home = ({ history }) => {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [userImg, setUserImg] = useState(getUserImgFromLocalStorage());
+  const [notificationCount, setNotificationCount] = useState(null);
+  const [friendList, setFriendList] = useState([]);
+  const displayDropDown = notificationCount ? "block" : "none";
+  const onNotificationCountHandler = (value) => {
+    setNotificationCount(value === 0 ? null : value);
+  };
 
   const onAddNewPost = (newPost) => {
     setPosts((oldPosts) => [newPost, ...oldPosts]);
@@ -39,7 +47,11 @@ const Home = ({ history }) => {
   };
 
   const onAddNewComment = (newComment) => {
-    const sortedComments = _.orderBy(newComment.comments, ['createdAt'],['desc']);
+    const sortedComments = _.orderBy(
+      newComment.comments,
+      ["createdAt"],
+      ["desc"]
+    );
     setPosts((oldPosts) => {
       let clonePosts = _.cloneDeep(oldPosts);
       _.forEach(clonePosts, (post) => {
@@ -66,7 +78,7 @@ const Home = ({ history }) => {
 
   useEffect(() => {
     const socket = io.connect(`${process.env.REACT_APP_BASE_URL}`);
-    API.get(`${process.env.REACT_APP_BASE_URL}${GET_POSTS}`)
+    API.get(`${GET_POSTS}`)
       .then((res) => {
         setPosts(res?.data?.data);
         setIsLoading(false);
@@ -77,6 +89,11 @@ const Home = ({ history }) => {
         history.push("/");
         localStorage.clear();
       });
+    API.get(`${FRIEND_LIST}`)
+      .then((res) => {
+        setFriendList(res?.data?.data);
+      })
+      .catch((err) => console.log(err));
 
     socket.on("new-like", (e) => {
       onLikeHandler(e);
@@ -128,30 +145,46 @@ const Home = ({ history }) => {
                   postedBy={post?.user}
                   comments={post?.comments}
                   userImgUrl={post?.user?.imgUrl}
+                  friendList={friendList}
                 />
               </div>
             );
           })}
         </div>
-        <div className="home__right-container">
-          <div className="ml-auto">
-            <OverlayTrigger
-              placement="bottom"
-              overlay={<Tooltip>{LOGOUT}</Tooltip>}
-            >
-              <Button
-                variant="light"
-                onClick={onLogoutHandler}
-                className="home__logout-btn"
+        <div className="home__right-panel">
+          <div className="home__right-panel__container">
+            <div className="home__right-panel__container__dropdown ">
+              <button className="home__right-panel__container__dropdown__btn">
+                <BsFillBellFill />
+                <span>{notificationCount}</span>
+              </button>
+              <div
+                className="home__right-panel__container__dropdown__body"
+                style={{ display: `${displayDropDown}` }}
               >
-                <FiLogOut />
-              </Button>
-            </OverlayTrigger>
+                <Notification
+                  onNotificationCountHandler={onNotificationCountHandler}
+                />
+              </div>
+            </div>
+            <div className="exit-btn">
+              <OverlayTrigger
+                placement="bottom"
+                overlay={<Tooltip>{LOGOUT}</Tooltip>}
+              >
+                <Button
+                  variant="light"
+                  onClick={onLogoutHandler}
+                  className="home__logout-btn"
+                >
+                  <FiLogOut />
+                </Button>
+              </OverlayTrigger>
+            </div>
           </div>
         </div>
       </div>
     </UserImgContext.Provider>
-
   );
 };
 

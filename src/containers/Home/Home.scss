@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
 .home {
   display: flex;
   &__cards {
@@ -5,7 +6,6 @@
     border-bottom: 1px solid rgb(239, 243, 244);
     border-left: 1px solid rgb(239, 243, 244);
     border-radius: 1px;
-    
   }
   &__logout {
     justify-content: flex-end;
@@ -23,11 +23,63 @@
   &__center-container {
     width: 40%;
   }
-  
-  &__right-container {
-    display: flex;
+
+  &__right-panel {
+    padding-top: 1rem;
+    padding-right: 1rem;
     width: 30%;
     justify-content: flex-end;
+    &__container {
+      display: flex;
+      justify-content: flex-end;
+      &__dropdown {
+        position: relative;
+        display: inline-block;
+        margin-right: 1rem;
+        &__btn {
+          border: none;
+          height: 38px;
+          width: 42px;
+          border-radius: 4px;
+          background-color: #f8f9fa;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: auto;
+          position: relative;
+          span {
+            top: -8px;
+            right: -8px;
+            min-width: 1rem;
+            position: absolute;
+            width: fit-content;
+            color: #1da1f2;
+            border-radius: 5px;
+            line-height: 1rem;
+            padding: 2px;
+            font-weight:800;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 16px;
+          }
+        }
+        &__body {
+          visibility: hidden;
+          opacity: 0;
+          transition: visibility 0s, opacity 0.5s linear;
+          position: absolute;
+          background-color: white;
+          width: 17rem;
+          border-radius: 4px;
+          box-shadow: 2px 2px 6px 2px lightgrey;
+          padding: 4px;
+          right: 0;
+        }
+        &:hover &__body {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+    }
   }
 }
 @media only screen and (max-width: 800px) {
@@ -48,8 +100,17 @@
     &__center-container {
       width: 100%;
     }
-    &__right-container {
+    &__right-panel {
       width: 0;
+      padding: 0;
+      padding-top: 1rem;
+    &__container {
+      &__dropdown {
+        &__btn {
+          top: -8px;
+        }
+      }
+    }
     }
   }
 }

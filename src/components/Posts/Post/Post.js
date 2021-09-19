@@ -1,56 +1,94 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Collapse, Dropdown } from "react-bootstrap";
-import { BsChat } from 'react-icons/bs';
-import { FcLike } from 'react-icons/fc';
-import { AiOutlineHeart } from 'react-icons/ai';
+import { BsChat } from "react-icons/bs";
+import { FcLike } from "react-icons/fc";
+import { AiOutlineHeart } from "react-icons/ai";
+import _ from "lodash";
 import Comments from "./Comments/Comments";
 import {
   LIKE_POST,
   DISLIKE_POST,
   DELETE_POST,
-  DEFAULT_USER_PROFILE
+  DEFAULT_USER_PROFILE,
+  ADD_FRIEND_REQUEST,
 } from "../../../utils/constants";
 import API from "../../../utils/API";
-import "./Post.scss";
 import { ADD_FRIEND, DELETE } from "../../../labels/button";
 import { getActualTime } from "../../../utils/functions";
 import UserImgContext from "../../../contextStore/UserImgContext";
+import "./Post.scss";
 
-const Post = ({ name, text, createdAt, likes, postId, postedBy, comments, userImgUrl }) => {
+const Post = ({
+  name,
+  text,
+  createdAt,
+  likes,
+  postId,
+  postedBy,
+  comments,
+  userImgUrl,
+  friendList,
+}) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const { userImg } = useContext(UserImgContext);
   const [open, setOpen] = useState(false);
   const [postContent, setPostContent] = useState(text);
-  const [postLikedByCurrentUser, setPostLikedByCurrentUser] = useState(likes.includes(user?._id) ? <FcLike key={1} /> : <AiOutlineHeart key={2} />)
   const [shrinkText, setShrinkText] = useState(false);
+  const [isAddFriend, setIsAddFriend] = useState(false);
+  const [postLikedByCurrentUser, setPostLikedByCurrentUser] = useState(
+    likes.includes(user?._id) ? <FcLike key={1} /> : <AiOutlineHeart key={2} />
+  );
   const textLength = text.length;
   const userProfile = userImgUrl ? userImgUrl : DEFAULT_USER_PROFILE;
 
   useEffect(() => {
     if (textLength > 300) {
-      setPostContent((oldPost) => { return oldPost.substring(0, 250) });
+      setPostContent((oldPost) => {
+        return oldPost.substring(0, 250);
+      });
       setShrinkText(true);
     }
-  }, [textLength])
+  }, [textLength]);
 
   const onHandleLike = (event) => {
-    setPostLikedByCurrentUser(postLikedByCurrentUser.key === "1" ? <AiOutlineHeart key={2} /> : <FcLike key={1} />);
-    API
-      .get(
-        `${postLikedByCurrentUser.key === "1" ? DISLIKE_POST : LIKE_POST
-        }${postId}`
+    setPostLikedByCurrentUser(
+      postLikedByCurrentUser.key === "1" ? (
+        <AiOutlineHeart key={2} />
+      ) : (
+        <FcLike key={1} />
       )
+    );
+    API.get(
+      `${
+        postLikedByCurrentUser.key === "1" ? DISLIKE_POST : LIKE_POST
+      }${postId}`
+    )
       .then()
       .catch((err) => console.error(err));
   };
 
   const onDeletePostHandler = () => {
-    API
-      .delete(
-        `${DELETE_POST}${postId}`,
-      )
+    API.delete(`${DELETE_POST}${postId}`)
       .then()
       .catch((err) => console.error(err));
+  };
+
+  const onAddFriendHandler = () => {
+    setIsAddFriend(true);
+    API.post(`${ADD_FRIEND_REQUEST}${postedBy._id}`)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .then(() => {
+        setIsAddFriend(false);
+      });
+  };
+
+  const isBothAreFriends = (id) => {
+    return _.find(friendList, { _id: id });
   };
 
   return (
@@ -83,37 +121,41 @@ const Post = ({ name, text, createdAt, likes, postId, postedBy, comments, userIm
             </Dropdown>
           ) : (
             <>
-              <Dropdown className="post__dropdown">
-                <Dropdown.Toggle
-                  className="post__dropdown post__dropdowm-btn"
-                  variant="light"
-                  id="dropdown-basic"
-                  size="sm"
-                ></Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item>
-                    {ADD_FRIEND}
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+              {!isBothAreFriends(postedBy._id) && (
+                <Dropdown className="post__dropdown">
+                  <Dropdown.Toggle
+                    className="post__dropdown post__dropdowm-btn"
+                    variant="light"
+                    id="dropdown-basic"
+                    size="sm"
+                  ></Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      onClick={onAddFriendHandler}
+                      disabled={isAddFriend}
+                    >
+                      {ADD_FRIEND}
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              )}
             </>
           )}
         </div>
         <div>
           <p className="post__content">
             {postContent}
-            {
-              shrinkText &&
+            {shrinkText && (
               <span
                 className="post__expend-text"
                 onClick={() => {
                   setPostContent(text);
                   setShrinkText(false);
-                }}>
+                }}
+              >
                 ...
               </span>
-            }
-
+            )}
           </p>
         </div>
         <div className="d-flex">
