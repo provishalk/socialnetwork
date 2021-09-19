@@ -6,3 +6,4 @@ export const LOGOUT = "Logout";
 export const DELETE = "Delete";
 export const CHANGE = "Change";
 export const ADD_FRIEND = "Add Friend";
+export const ACCEPT = "Accept";
