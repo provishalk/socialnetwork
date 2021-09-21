@@ -131,7 +131,7 @@ const Home = ({ history }) => {
 
   return (
     <InfiniteScroll
-      dataLength={posts.length} //This is important field to render the next data
+      dataLength={posts.length} 
       next={loadMorePosts}
       hasMore={morePost}
       endMessage={
