@@ -4,11 +4,12 @@ import { BsFillBellFill } from "react-icons/bs";
 import { OverlayTrigger, Button, Tooltip } from "react-bootstrap";
 import io from "socket.io-client";
 import _ from "lodash";
+import InfiniteScroll from "react-infinite-scroll-component";
 import alertify from "alertifyjs";
 import AddPost from "../../components/Posts/AddPost/AddPost";
 import Post from "../../components/Posts/Post/Post";
 import API from "../../utils/API";
-import { FRIEND_LIST, GET_POSTS } from "../../utils/constants";
+import { FRIEND_LIST, GET_MORE_POST, GET_POSTS, NO_MORE_POST } from "../../utils/constants";
 import { LOGOUT } from "../../labels/button";
 import { HOME } from "../../labels/headings";
 import Profile from "../../components/User/Profile/Profile";
@@ -25,6 +26,7 @@ const Home = ({ history }) => {
   const [userImg, setUserImg] = useState(getUserImgFromLocalStorage());
   const [notificationCount, setNotificationCount] = useState(null);
   const [friendList, setFriendList] = useState([]);
+  const [morePost, setMorePost] = useState(true);
   const displayDropDown = notificationCount ? "block" : "none";
   const onNotificationCountHandler = (value) => {
     setNotificationCount(value === 0 ? null : value);
@@ -112,79 +114,107 @@ const Home = ({ history }) => {
     });
   }, [history]);
 
+  const loadMorePosts = () => {
+    setMorePost(false);
+    setIsLoading(true);
+    API.get(`${GET_MORE_POST}`)
+      .then((res) => {
+        setPosts([...posts, ...res?.data?.data]);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .then(() => {
+        setIsLoading(false);
+      });
+  };
+
   return (
-    <UserImgContext.Provider value={{ userImg, setUserImg }}>
-      <div className="home">
-        <div className="home__left-container">
-          <Profile />
-        </div>
-        <div className="home__center-container">
-          <div className="col m-auto p-2 home__cards home_disable-hover">
-            <h4>{HOME}</h4>
+    <InfiniteScroll
+      dataLength={posts.length} //This is important field to render the next data
+      next={loadMorePosts}
+      hasMore={morePost}
+      endMessage={
+        !isLoading && (
+          <p className="mt-3" style={{ textAlign: "center" }}>
+            <b>{NO_MORE_POST}</b>
+          </p>
+        )
+      }
+    >
+      <UserImgContext.Provider value={{ userImg, setUserImg }}>
+        <div className="home">
+          <div className="home__left-container">
+            <Profile />
           </div>
-          <div className="col m-auto p-2 home__cards">
-            <AddPost />
-          </div>
-          {isLoading &&
-            DUMMY_ARRAY.map((key) => {
+          <div className="home__center-container">
+            <div className="col m-auto p-2 home__cards home_disable-hover">
+              <h4>{HOME}</h4>
+            </div>
+            <div className="col m-auto p-2 home__cards">
+              <AddPost />
+            </div>
+            {posts.map((post) => {
               return (
-                <div className="col m-auto p-2 home__cards" key={key}>
-                  <PostLoading />
+                <div className="col m-auto p-2 home__cards" key={post._id}>
+                  <Post
+                    name={post?.user?.name}
+                    text={post?.text}
+                    createdAt={post?.createdAt}
+                    likes={post?.likes}
+                    postId={post?._id}
+                    postedBy={post?.user}
+                    comments={post?.comments}
+                    userImgUrl={post?.user?.imgUrl}
+                    friendList={friendList}
+                  />
                 </div>
               );
             })}
-          {posts.map((post) => {
-            return (
-              <div className="col m-auto p-2 home__cards" key={post._id}>
-                <Post
-                  name={post?.user?.name}
-                  text={post?.text}
-                  createdAt={post?.createdAt}
-                  likes={post?.likes}
-                  postId={post?._id}
-                  postedBy={post?.user}
-                  comments={post?.comments}
-                  userImgUrl={post?.user?.imgUrl}
-                  friendList={friendList}
-                />
-              </div>
-            );
-          })}
-        </div>
-        <div className="home__right-panel">
-          <div className="home__right-panel__container">
-            <div className="home__right-panel__container__dropdown ">
-              <button className="home__right-panel__container__dropdown__btn">
-                <BsFillBellFill />
-                <span>{notificationCount}</span>
-              </button>
-              <div
-                className="home__right-panel__container__dropdown__body"
-                style={{ display: `${displayDropDown}` }}
-              >
-                <Notification
-                  onNotificationCountHandler={onNotificationCountHandler}
-                />
-              </div>
-            </div>
-            <div className="exit-btn">
-              <OverlayTrigger
-                placement="bottom"
-                overlay={<Tooltip>{LOGOUT}</Tooltip>}
-              >
-                <Button
-                  variant="light"
-                  onClick={onLogoutHandler}
-                  className="home__logout-btn"
+            {isLoading &&
+              DUMMY_ARRAY.map((key) => {
+                return (
+                  <div className="col m-auto p-2 home__cards" key={key}>
+                    <PostLoading />
+                  </div>
+                );
+              })}
+          </div>
+          <div className="home__right-panel">
+            <div className="home__right-panel__container">
+              <div className="home__right-panel__container__dropdown ">
+                <button className="home__right-panel__container__dropdown__btn">
+                  <BsFillBellFill />
+                  <span>{notificationCount}</span>
+                </button>
+                <div
+                  className="home__right-panel__container__dropdown__body"
+                  style={{ display: `${displayDropDown}` }}
                 >
-                  <FiLogOut />
-                </Button>
-              </OverlayTrigger>
+                  <Notification
+                    onNotificationCountHandler={onNotificationCountHandler}
+                  />
+                </div>
+              </div>
+              <div className="exit-btn">
+                <OverlayTrigger
+                  placement="bottom"
+                  overlay={<Tooltip>{LOGOUT}</Tooltip>}
+                >
+                  <Button
+                    variant="light"
+                    onClick={onLogoutHandler}
+                    className="home__logout-btn"
+                  >
+                    <FiLogOut />
+                  </Button>
+                </OverlayTrigger>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </UserImgContext.Provider>
+      </UserImgContext.Provider>
+    </InfiniteScroll>
   );
 };
 
