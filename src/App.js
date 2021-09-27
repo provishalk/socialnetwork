@@ -9,8 +9,8 @@ import Home from "./containers/Home/Home";
 import NotFound from "./components/Error/NotFound"
 import SecuredRoute from "./auth/SecuredRoute"
 import "alertifyjs/build/css/alertify.css";
-import "./App.scss"
 alertify.set("notifier", "position", "top-right");
+
 const App = () => {
   return (
     <>
