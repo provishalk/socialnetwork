@@ -56,8 +56,8 @@
             border-radius: 5px;
             line-height: 1rem;
             padding: 2px;
-            font-weight:800;
-            font-family: 'Patrick Hand', cursive;
+            font-weight: 800;
+            font-family: "Patrick Hand", cursive;
             font-size: 16px;
           }
         }
@@ -76,6 +76,40 @@
         &:hover &__body {
           visibility: visible;
           opacity: 1;
+        }
+      }
+    }
+    &__friend_list {
+      width: 16rem;
+      position: absolute;
+      top: 4rem;
+      padding: 4px;
+      &__heading{
+        font-size: 1.06rem;
+        font-weight: 600;
+        color: #65676b;
+      }
+      &__divider{
+        margin-bottom: 0;
+        display: fixed;
+      }
+      &__names-container{
+        max-height: 30rem;
+        overflow: scroll;
+        overflow-x: hidden;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+      &__names{
+        font-size: 1.06rem;
+        font-weight: 600;
+        padding: 8px;
+        border-radius: 8px;
+        margin-top: 4px;
+        cursor: context-menu;
+        &:hover{
+          background-color: #f1f0f0;
         }
       }
     }
@@ -103,13 +137,13 @@
       width: 0;
       padding: 0;
       padding-top: 1rem;
-    &__container {
-      &__dropdown {
-        &__btn {
-          top: -8px;
+      &__container {
+        &__dropdown {
+          &__btn {
+            top: -8px;
+          }
         }
       }
-    }
     }
   }
 }

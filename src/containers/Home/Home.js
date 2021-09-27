@@ -9,9 +9,14 @@ import alertify from "alertifyjs";
 import AddPost from "../../components/Posts/AddPost/AddPost";
 import Post from "../../components/Posts/Post/Post";
 import API from "../../utils/API";
-import { FRIEND_LIST, GET_MORE_POST, GET_POSTS, NO_MORE_POST } from "../../utils/constants";
+import {
+  FRIEND_LIST,
+  GET_MORE_POST,
+  GET_POSTS,
+  NO_MORE_POST,
+} from "../../utils/constants";
 import { LOGOUT } from "../../labels/button";
-import { HOME } from "../../labels/headings";
+import { CONTACTS, HOME } from "../../labels/headings";
 import Profile from "../../components/User/Profile/Profile";
 import PostLoading from "../../components/Posts/PostLoading/PostLoading";
 import Notification from "../../components/Notification/Notification";
@@ -28,6 +33,7 @@ const Home = ({ history }) => {
   const [friendList, setFriendList] = useState([]);
   const [morePost, setMorePost] = useState(true);
   const displayDropDown = notificationCount ? "block" : "none";
+
   const onNotificationCountHandler = (value) => {
     setNotificationCount(value === 0 ? null : value);
   };
@@ -93,7 +99,8 @@ const Home = ({ history }) => {
       });
     API.get(`${FRIEND_LIST}`)
       .then((res) => {
-        setFriendList(res?.data?.data);
+        const data = res?.data?.data;
+        setFriendList(_.uniqBy(data, "_id"));
       })
       .catch((err) => console.log(err));
 
@@ -128,10 +135,9 @@ const Home = ({ history }) => {
         setIsLoading(false);
       });
   };
-
   return (
     <InfiniteScroll
-      dataLength={posts.length} 
+      dataLength={posts.length}
       next={loadMorePosts}
       hasMore={morePost}
       endMessage={
@@ -210,6 +216,26 @@ const Home = ({ history }) => {
                   </Button>
                 </OverlayTrigger>
               </div>
+              {friendList.length ? (
+                <div className="home__right-panel__friend_list">
+                  <div className="home__right-panel__friend_list__heading">
+                    {CONTACTS}
+                  </div>
+                  <hr className="home__right-panel__friend_list__divider" />
+                  <div className="home__right-panel__friend_list__names-container">
+                    {friendList.map((friend) => (
+                      <div
+                        key={friend._id}
+                        className="home__right-panel__friend_list__names"
+                      >
+                        {friend.name}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>
