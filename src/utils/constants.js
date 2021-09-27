@@ -16,6 +16,7 @@ export const ADD_FRIEND_REQUEST = "/api/user/add-friend/";
 export const ALL_NOTIFICATION = "/api/notification/all/";
 export const ACCEPT_FRIEND = "/api/user/accept-friend/";
 export const FRIEND_LIST = "/api/user/get-friends/";
+export const GET_MORE_POST = "/api/post/get-more-posts/";
 
 //Placeholders
 export const ENTER_NAME = "Enter Full Name";
@@ -43,6 +44,7 @@ export const SOMETHING_WRONG = "Something went wrong!";
 export const SESSION_EXPIRED = "Session expired please login again";
 export const SELECT_IMG = "Please Select Image First";
 export const ONLY_IMG = "Only IMG";
+export const NO_MORE_POST = "Yay! You have seen it all";
 
 //URLs
 export const DEFAULT_USER_PROFILE =
